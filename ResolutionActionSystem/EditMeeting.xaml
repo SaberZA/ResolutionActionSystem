@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="ResolutionActionSystem.EditMeeting"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="560" d:DesignWidth="729">
+    <Grid Height="558" Name="grid1" Width="725">
+        <Label Background="#00000000" Content="Selected Meeting: " FontSize="25" Height="48" HorizontalAlignment="Left" Margin="0,53,0,457" Name="lblSelectedMeetingHeader" Padding="15,5,5,5" Width="223" />
+        <Label Content="Meeting:" Height="28" HorizontalAlignment="Left" Margin="6,10,0,0" Name="lblMeetingComboBox" VerticalAlignment="Top" Width="63" />
+        <ComboBox Height="23" HorizontalAlignment="Left" Margin="75,11,0,0" Name="cboMeeting" VerticalAlignment="Top" Width="346" />
+        <Button Content="Select" Height="23" HorizontalAlignment="Right" Margin="0,11,176,0" Name="btnSelect" VerticalAlignment="Top" Width="110" />
+        <Separator Height="14" HorizontalAlignment="Left" Margin="0,48,0,0" Name="separator1" VerticalAlignment="Top" Width="730" />
+        <Label Content="Meeting Items: " Height="28" HorizontalAlignment="Left" Margin="6,103,0,0" Name="lblMeetingItemsHeader" VerticalAlignment="Top" Width="91" />
+        <ListBox Height="267" HorizontalAlignment="Left" Margin="6,128,0,0" Name="lstMeetingItems" VerticalAlignment="Top" Width="226" />
+        <Label Content="Meeting Item Name: " Height="28" HorizontalAlignment="Left" Margin="266,137,0,0" Name="label3" VerticalAlignment="Top" Width="124" />
+        <Label Content="Meeting Item Status: " Height="28" HorizontalAlignment="Left" Margin="266,171,0,0" Name="label4" VerticalAlignment="Top" Width="124" />
+        <Label Content="Person Responsible: " Height="28" HorizontalAlignment="Left" Margin="266,207,0,0" Name="label5" VerticalAlignment="Top" Width="124" />
+        <Label Content="Due Date: " Height="28" HorizontalAlignment="Left" Margin="266,241,0,0" Name="label6" VerticalAlignment="Top" Width="91" />
+        <Label Content="Comments: " Height="28" HorizontalAlignment="Left" Margin="266,275,0,0" Name="label7" VerticalAlignment="Top" Width="91" />
+        <ComboBox Height="23" HorizontalAlignment="Left" Margin="452,176,0,0" Name="cboMeetingItemStatus" VerticalAlignment="Top" Width="235" />
+        <ComboBox Height="23" HorizontalAlignment="Left" Margin="452,212,0,0" Name="cboPersonResponsible" VerticalAlignment="Top" Width="235" />
+        <DatePicker Height="25" HorizontalAlignment="Left" Margin="452,244,0,0" Name="dpMeetingItemDueDate" VerticalAlignment="Top" Width="235" />
+        <ListBox Height="110" HorizontalAlignment="Left" Margin="372,277,0,0" Name="lstMeetingActions" VerticalAlignment="Top" Width="315" />
+        <TextBox Height="23" HorizontalAlignment="Left" Margin="452,142,0,0" Name="txtMeetingItemName" VerticalAlignment="Top" Width="235" />
+        <Separator Height="14" HorizontalAlignment="Left" Margin="0,397,0,0" Name="separator2" VerticalAlignment="Top" Width="730" />
+        <Label Content="Meeting Item Options: " FontSize="14" Height="28" HorizontalAlignment="Left" Margin="6,418,0,0" Name="label8" VerticalAlignment="Top" Width="155" />
+        <Button Height="54" HorizontalAlignment="Left" Margin="8,471,0,0" Name="btnAddMeetingItem" VerticalAlignment="Top" Width="164">
+            <TextBlock>Add Meeting Item</TextBlock>
+        </Button>
+        <Button Content="Update Meeting Item Actions" Height="54" HorizontalAlignment="Left" Margin="538,471,0,0" Name="btnUpdateMeetingItemActions" VerticalAlignment="Top" Width="181" />
+        <Button Content="Update Meeting Item Due Date" Height="54" HorizontalAlignment="Left" Margin="348,471,0,0" Name="btnUpdateMeetingItemDueDate" VerticalAlignment="Top" Width="186" />
+        <Button Height="54" HorizontalAlignment="Left" Margin="178,471,0,0" Name="btnUpdateMeetingItemStatus" VerticalAlignment="Top" Width="164">
+            <TextBlock TextAlignment="Center">Update Meeting Item<LineBreak />Status</TextBlock>
+        </Button>
+        <Label Background="#00000000" Content="M1 - MANCO" FontSize="25" Height="48" Margin="218,53,51,457" Name="lblCurrentMeeting" Padding="5" />
+        <Button Content="Cancel" Height="23" HorizontalAlignment="Right" Margin="0,69,163,0" Name="button1" VerticalAlignment="Top" Width="110" />
+        <Button Content="Save" Height="23" HorizontalAlignment="Right" Margin="0,69,38,0" Name="button2" VerticalAlignment="Top" Width="110" />
+    </Grid>
+</UserControl>

@@ -1,0 +1,31 @@
+﻿<UserControl x:Class="ResolutionActionSystem.CaptureMeeting"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="367" d:DesignWidth="430" Width="725" Height="558">
+    <Grid Width="Auto" Height="Auto">
+        <Label Background="#00000000" Content="Capture New Meeting" FontSize="25" Height="48" HorizontalAlignment="Left" Margin="10,10,0,500" Name="lblCaptureMeetingHeader" Padding="15,5,5,5" Width="275" />
+        <Label Content="Meeting Type:" Height="28" HorizontalAlignment="Left" Margin="12,100,0,0" Name="lblMeetingTypeHeader" VerticalAlignment="Top" Width="92" />
+        <ComboBox Height="23" HorizontalAlignment="Left" Margin="101,105,0,0" Name="cboMeetingType" VerticalAlignment="Top" Width="184" 
+                  ItemsSource="{Binding Path=MeetingTypes}"
+                  DisplayMemberPath="MeetingTypeName"
+                  SelectedValuePath="MeetingTypeId" Tag="MeetingType"
+                  SelectedItem="{Binding Path=CurrentMeetingType}"
+                  />
+        <Label Content="Meeting Date:" Height="28" HorizontalAlignment="Left" Margin="12,134,0,0" Name="label1" VerticalAlignment="Top" Width="92" />
+        <DatePicker Height="25" HorizontalAlignment="Left" Margin="101,137,0,0" Name="dpMeetingDate" VerticalAlignment="Top" Width="184" Tag="MeetingDate" />
+        <Separator Height="20" HorizontalAlignment="Left" Margin="0,61,0,0" Name="separator1" VerticalAlignment="Top" Width="725" />
+        <Label Content="Previous Meeting Items:" Height="28" HorizontalAlignment="Left" Margin="10,181,0,0" Name="label2" VerticalAlignment="Top" Width="137" />
+        <ListBox Height="239" HorizontalAlignment="Left" Margin="10,215,0,0" Name="lstPreviousMeetingItems" VerticalAlignment="Top" Width="275" />
+        <ListBox Height="239" HorizontalAlignment="Left" Margin="369,215,0,0" Name="lstMeetingItems" VerticalAlignment="Top" Width="275" Tag="MeetingItems" />
+        <Label Content="Meeting Items for Next Meeting:" Height="28" HorizontalAlignment="Left" Margin="369,181,0,0" Name="label3" VerticalAlignment="Top" Width="188" />
+        <Button Content="❯" Height="36" HorizontalAlignment="Left" Margin="308,249,0,0" Name="btnTransferSingleItem" VerticalAlignment="Top" Width="37" />
+        <Button Content="❯❯" Height="36" HorizontalAlignment="Left" Margin="308,291,0,0" Name="btnTransferAllItems" VerticalAlignment="Top" Width="37" />
+        <Button Content="❮" Height="36" HorizontalAlignment="Left" Margin="308,356,0,0" Name="btnReturnSingleItem" VerticalAlignment="Top" Width="37" />
+        <Label Content="Transfer" Height="28" HorizontalAlignment="Left" Margin="300,215,0,0" Name="label4" VerticalAlignment="Top" />
+        <Button Content="❮❮" Height="36" HorizontalAlignment="Left" Margin="308,398,0,0" Name="btnReturnAllItems" VerticalAlignment="Top" Width="37" />
+        <Button Content="Create Meeting" Height="23" HorizontalAlignment="Left" Margin="12,492,0,0" Name="btnCreateMeeting" VerticalAlignment="Top" Width="108" />
+    </Grid>
+</UserControl>

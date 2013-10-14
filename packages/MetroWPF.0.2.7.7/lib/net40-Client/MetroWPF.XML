@@ -1,0 +1,599 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MetroWPF</name>
+    </assembly>
+    <members>
+        <member name="T:MetroWPF.Accent">
+            <summary>
+            Specifies an accent color.
+            </summary>
+        </member>
+        <member name="M:MetroWPF.Accent.#ctor(System.String,System.Windows.Media.Color)">
+            <summary>
+            Initializes a new instance of the <see cref="T:MetroWPF.Accent"/> class.
+            </summary>
+            <param name="nameKey">The name key.</param>
+            <param name="color">The color.</param>
+            <exception cref="T:System.ArgumentException">Name key is required.</exception>
+        </member>
+        <member name="P:MetroWPF.Accent.Brush">
+            <summary>
+            Gets the accent brush.
+            </summary>
+            <value>The brush.</value>
+        </member>
+        <member name="P:MetroWPF.Accent.Brush2">
+            <summary>
+            Gets the accent brush 2.
+            </summary>
+            <value>The brush.</value>
+        </member>
+        <member name="P:MetroWPF.Accent.Brush3">
+            <summary>
+            Gets the accent brush 3.
+            </summary>
+            <value>The brush.</value>
+        </member>
+        <member name="P:MetroWPF.Accent.Brush4">
+            <summary>
+            Gets the accent brush 4.
+            </summary>
+            <value>The brush.</value>
+        </member>
+        <member name="P:MetroWPF.Accent.Brush5">
+            <summary>
+            Gets the accent brush 5.
+            </summary>
+            <value>The brush.</value>
+        </member>
+        <member name="P:MetroWPF.Accent.Brush6">
+            <summary>
+            Gets the accent brush 6.
+            </summary>
+            <value>The brush.</value>
+        </member>
+        <member name="P:MetroWPF.Accent.Brush7">
+            <summary>
+            Gets the accent brush 7.
+            </summary>
+            <value>The brush.</value>
+        </member>
+        <member name="P:MetroWPF.Accent.Brush8">
+            <summary>
+            Gets the accent brush 8.
+            </summary>
+            <value>The brush.</value>
+        </member>
+        <member name="P:MetroWPF.Accent.Brush9">
+            <summary>
+            Gets the accent brush 9.
+            </summary>
+            <value>The brush.</value>
+        </member>
+        <member name="P:MetroWPF.Accent.Brush10">
+            <summary>
+            Gets the accent brush 10.
+            </summary>
+            <value>The brush.</value>
+        </member>
+        <member name="P:MetroWPF.Accent.NameKey">
+            <summary>
+            Gets the name key.
+            </summary>
+            <value>The name key.</value>
+        </member>
+        <member name="T:MetroWPF.AccentColors">
+            <summary>
+            Provides an accent color view model control.
+            </summary>
+        </member>
+        <member name="F:MetroWPF.AccentColors.RED">
+            <summary>
+            Pre-defined name for the red accent.
+            </summary>
+        </member>
+        <member name="F:MetroWPF.AccentColors.ORANGE">
+            <summary>
+            Pre-defined name for the orange accent.
+            </summary>
+        </member>
+        <member name="F:MetroWPF.AccentColors.GREEN">
+            <summary>
+            Pre-defined name for the green accent.
+            </summary>
+        </member>
+        <member name="F:MetroWPF.AccentColors.TEAL">
+            <summary>
+            Pre-defined name for the teal accent.
+            </summary>
+        </member>
+        <member name="F:MetroWPF.AccentColors.OLIVE">
+            <summary>
+            Pre-defined name for the olive accent.
+            </summary>
+        </member>
+        <member name="F:MetroWPF.AccentColors.GOLD">
+            <summary>
+            Pre-defined name for the gold accent.
+            </summary>
+        </member>
+        <member name="F:MetroWPF.AccentColors.LIGHTBLUE">
+            <summary>
+            Pre-defined name for the light blue accent.
+            </summary>
+        </member>
+        <member name="F:MetroWPF.AccentColors.DARKBLUE">
+            <summary>
+            Pre-defined name for the dark blue accent.
+            </summary>
+        </member>
+        <member name="F:MetroWPF.AccentColors.PURPLE">
+            <summary>
+            Pre-defined name for the purple accent.
+            </summary>
+        </member>
+        <member name="M:MetroWPF.AccentColors.GetAccent(System.String)">
+            <summary>
+            Gets the accent with the specified name.
+            </summary>
+            <param name="name">The name.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MetroWPF.AccentColors.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:MetroWPF.AccentColors"/> class.
+            </summary>
+        </member>
+        <member name="P:MetroWPF.AccentColors.DefaultAccent">
+            <summary>
+            Gets the default accent color.
+            </summary>
+            <value>The default accent.</value>
+        </member>
+        <member name="P:MetroWPF.AccentColors.BuiltInAccents">
+            <summary>
+            Gets the built-in list of accent colors.
+            </summary>
+            <value>The built-in values.</value>
+        </member>
+        <member name="P:MetroWPF.AccentColors.Item(System.String)">
+            <summary>
+            Gets the <see cref="T:MetroWPF.Accent"/> with the specified name.
+            </summary>
+            <value></value>
+        </member>
+        <member name="P:MetroWPF.AccentColors.CurrentAccent">
+            <summary>
+            Gets or sets the current accent color.
+            </summary>
+            <value>The current accent.</value>
+        </member>
+        <member name="E:MetroWPF.AccentColors.PropertyChanged">
+            <summary>
+            Occurs when a property value changes.
+            </summary>
+        </member>
+        <member name="T:MetroWPF.Behaviors.MetroBehavior">
+            <summary>
+            Contains behaviors for the metro lib.
+            </summary>
+        </member>
+        <member name="F:MetroWPF.Behaviors.MetroBehavior.HScrollOnWheelProperty">
+            <summary>
+            Attached propert to allow horizontal scroll by mouse wheel if possible.
+            </summary>
+        </member>
+        <member name="M:MetroWPF.Behaviors.MetroBehavior.GetHScrollOnWheel(System.Windows.DependencyObject)">
+            <summary>
+            Gets the HScrollOnWheel property for this object.
+            </summary>
+            <param name="obj">The obj.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MetroWPF.Behaviors.MetroBehavior.SetHScrollOnWheel(System.Windows.DependencyObject,System.Boolean)">
+            <summary>
+            Sets the HScrollOnWheel property for this object.
+            </summary>
+            <param name="obj">The obj.</param>
+            <param name="value">if set to <c>true</c> then h-scroll logic will be used if possible.</param>
+        </member>
+        <member name="F:MetroWPF.Behaviors.MetroBehavior.IsHitTestVisibleInChromeProperty">
+            <summary>
+            Attached property to mark a UI element as hit-testable when in the window caption area.
+            </summary>
+        </member>
+        <member name="M:MetroWPF.Behaviors.MetroBehavior.GetIsHitTestVisibleInChrome(System.Windows.IInputElement)">
+            <summary>
+            Gets the IsHitTestVisibleInChrome property for the element.
+            </summary>
+            <param name="inputElement">The input element.</param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentException"></exception>
+        </member>
+        <member name="M:MetroWPF.Behaviors.MetroBehavior.SetIsHitTestVisibleInChrome(System.Windows.IInputElement,System.Boolean)">
+            <summary>
+            Sets the IsHitTestVisibleInChrome property for the element.
+            </summary>
+            <param name="inputElement">The input element.</param>
+            <param name="hitTestVisible">if set to <c>true</c> then the element is hit test visible in chrome.</param>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:System.ArgumentException"></exception>
+        </member>
+        <member name="T:MetroWPF.Controls.MetroWindow">
+            <summary>
+            A window with metro looks.
+            </summary>
+        </member>
+        <member name="F:MetroWPF.Controls.MetroWindow.NC_BORDER_MATRIX">
+            <summary>
+            Matrix of the HT values to return for sizing border.
+            </summary>
+        </member>
+        <member name="M:MetroWPF.Controls.MetroWindow.OnSourceInitialized(System.EventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Windows.Window.SourceInitialized" /> event.
+            </summary>
+            <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data.</param>
+        </member>
+        <member name="M:MetroWPF.Controls.MetroWindow.WndProc(System.IntPtr,System.Int32,System.IntPtr,System.IntPtr,System.Boolean@)">
+            <summary>
+            Handles Win32 window messages for this window.
+            </summary>
+            <param name="hwnd">The window handle.</param>
+            <param name="msg">The message ID.</param>
+            <param name="wParam">The message's wParam value.</param>
+            <param name="lParam">The message's lParam value.</param>
+            <param name="handled">A value that indicates whether the message was handled. Set the value to
+            true if the message was handled; otherwise, false.</param>
+            <returns></returns>
+        </member>
+        <member name="F:MetroWPF.Controls.MetroWindow.CaptionHeightProperty">
+            <summary>
+            Identifies the <see cref="F:MetroWPF.Controls.MetroWindow.CaptionHeightProperty"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:MetroWPF.Controls.MetroWindow.CaptionContentProperty">
+            <summary>
+            Identifies the <see cref="F:MetroWPF.Controls.MetroWindow.CaptionContentProperty"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:MetroWPF.Controls.MetroWindow.ShowWindowTitleProperty">
+            <summary>
+            Identifies the <see cref="F:MetroWPF.Controls.MetroWindow.ShowWindowTitleProperty"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:MetroWPF.Controls.MetroWindow.ShowAccentBoxProperty">
+            <summary>
+            Identifies the <see cref="F:MetroWPF.Controls.MetroWindow.ShowAccentBoxProperty"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:MetroWPF.Controls.MetroWindow.CaptionBackgroundProperty">
+            <summary>
+            Identifies the <see cref="F:MetroWPF.Controls.MetroWindow.CaptionBackgroundProperty"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:MetroWPF.Controls.MetroWindow.CaptionButtonForegroundProperty">
+            <summary>
+            Identifies the <see cref="F:MetroWPF.Controls.MetroWindow.CaptionButtonForegroundProperty"/> dependency property.
+            </summary>
+        </member>
+        <member name="M:MetroWPF.Controls.MetroWindow.OnApplyTemplate">
+            <summary>
+            When overridden in a derived class, is invoked whenever application code or internal processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate"/>.
+            </summary>
+        </member>
+        <member name="P:MetroWPF.Controls.MetroWindow.CaptionHeight">
+            <summary>
+            Gets or sets the height of the caption area.
+            </summary>
+            <value>The height of the caption area.</value>
+        </member>
+        <member name="P:MetroWPF.Controls.MetroWindow.CaptionBackground">
+            <summary>
+            Gets or sets the caption background.
+            </summary>
+            <value>
+            The caption background.
+            </value>
+        </member>
+        <member name="P:MetroWPF.Controls.MetroWindow.CaptionButtonForeground">
+            <summary>
+            Gets or sets the caption button foreground.
+            </summary>
+            <value>
+            The caption button foreground.
+            </value>
+        </member>
+        <member name="P:MetroWPF.Controls.MetroWindow.CaptionContent">
+            <summary>
+            Gets or sets the content of the caption area.
+            </summary>
+            <value>The content of the caption.</value>
+        </member>
+        <member name="P:MetroWPF.Controls.MetroWindow.ShowWindowTitle">
+            <summary>
+            Gets or sets a value indicating whether the window title is shown.
+            </summary>
+            <value><c>true</c> to show window title; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="P:MetroWPF.Controls.MetroWindow.ShowAccentBox">
+            <summary>
+            Gets or sets a value indicating whether the accent box is shown.
+            </summary>
+            <value><c>true</c> to show accent box; otherwise, <c>false</c>.</value>
+        </member>
+        <member name="T:MetroWPF.Converters.IsSmallFontConverter">
+            <summary>
+            A converter that tests if a double value considered a small font size to allow changing TextOptions.
+            This can be removed from the fonts style if using high dpi displays.
+            </summary>
+        </member>
+        <member name="T:MetroWPF.Converters.TextCaseConverter">
+            <summary>
+            Provides conversion of text to upper or lower cases.
+            </summary>
+        </member>
+        <member name="M:MetroWPF.Converters.TextCaseConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a value to the string representation.
+            </summary>
+            <param name="value">The value produced by the binding source.</param>
+            <param name="targetType">The type of the binding target property.</param>
+            <param name="parameter">The converter parameter to use.</param>
+            <param name="culture">The culture to use in the converter.</param>
+            <returns>
+            A converted value. If the method returns null, the valid null value is used.
+            </returns>
+        </member>
+        <member name="M:MetroWPF.Converters.TextCaseConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Not supported.
+            </summary>
+            <param name="value">The value that is produced by the binding target.</param>
+            <param name="targetType">The type to convert to.</param>
+            <param name="parameter">The converter parameter to use.</param>
+            <param name="culture">The culture to use in the converter.</param>
+            <returns>
+            A converted value. If the method returns null, the valid null value is used.
+            </returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="T:MetroWPF.Extensions">
+            <summary>
+            Extension methods for using this lib.
+            </summary>
+        </member>
+        <member name="M:MetroWPF.Extensions.TryGetScrollerViewer(System.Windows.Controls.ItemsControl)">
+            <summary>
+            Try to the get <see cref="T:System.Windows.Controls.ScrollViewer"/> from an <see cref="T:System.Windows.Controls.ItemsControl"/>.
+            </summary>
+            <param name="control">The control.</param>
+            <returns></returns>
+        </member>
+        <member name="T:MetroWPF.Controls.MetroContentControl">
+            <summary>
+            A <see cref="T:System.Windows.Controls.ContentControl"/> that animates content in and out.
+            </summary>
+        </member>
+        <member name="M:MetroWPF.Controls.MetroContentControl.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:MetroWPF.Controls.MetroContentControl"/> class.
+            </summary>
+        </member>
+        <member name="M:MetroWPF.Native.User32Ex.ResetMinMaxInfo(System.IntPtr,System.IntPtr,System.Int32,System.Int32)">
+            <summary>
+            For use with borderless form that needs correct maximized size.
+            </summary>
+            <param name="hWnd">The window handle.</param>
+            <param name="lParam">The lparam.</param>
+            <param name="minWidth">Width of the min.</param>
+            <param name="minHeight">Height of the min.</param>
+        </member>
+        <member name="T:MetroWPF.Resources.CommandText">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:MetroWPF.Resources.CommandText.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:MetroWPF.Resources.CommandText.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:MetroWPF.Resources.CommandText.CmdClose">
+            <summary>
+              Looks up a localized string similar to Close.
+            </summary>
+        </member>
+        <member name="P:MetroWPF.Resources.CommandText.CmdCopy">
+            <summary>
+              Looks up a localized string similar to Copy.
+            </summary>
+        </member>
+        <member name="P:MetroWPF.Resources.CommandText.CmdCut">
+            <summary>
+              Looks up a localized string similar to Cut.
+            </summary>
+        </member>
+        <member name="P:MetroWPF.Resources.CommandText.CmdDelete">
+            <summary>
+              Looks up a localized string similar to Delete.
+            </summary>
+        </member>
+        <member name="P:MetroWPF.Resources.CommandText.CmdMaximize">
+            <summary>
+              Looks up a localized string similar to Maximize.
+            </summary>
+        </member>
+        <member name="P:MetroWPF.Resources.CommandText.CmdMinimize">
+            <summary>
+              Looks up a localized string similar to Minimize.
+            </summary>
+        </member>
+        <member name="P:MetroWPF.Resources.CommandText.CmdPaste">
+            <summary>
+              Looks up a localized string similar to Paste.
+            </summary>
+        </member>
+        <member name="P:MetroWPF.Resources.CommandText.CmdRedo">
+            <summary>
+              Looks up a localized string similar to Redo.
+            </summary>
+        </member>
+        <member name="P:MetroWPF.Resources.CommandText.CmdRestore">
+            <summary>
+              Looks up a localized string similar to Restore Down.
+            </summary>
+        </member>
+        <member name="P:MetroWPF.Resources.CommandText.CmdSelectAll">
+            <summary>
+              Looks up a localized string similar to Select all.
+            </summary>
+        </member>
+        <member name="P:MetroWPF.Resources.CommandText.CmdUndo">
+            <summary>
+              Looks up a localized string similar to Undo.
+            </summary>
+        </member>
+        <member name="T:MetroWPF.Resources.CommandTextBinder">
+            <summary>
+            Provides bindable text for window commands.
+            The purpose of this is to support on-the-fly language changes.
+            </summary>
+        </member>
+        <member name="F:MetroWPF.Resources.CommandTextBinder.Current">
+            <summary>
+            Gets the global <see cref="T:MetroWPF.Resources.CommandTextBinder"/> object.
+            </summary>
+        </member>
+        <member name="M:MetroWPF.Resources.CommandTextBinder.UpdateCulture(System.Globalization.CultureInfo)">
+            <summary>
+            Updates the culture used for the command text. Pass null to use current culture.
+            </summary>
+            <param name="culture">The culture.</param>
+        </member>
+        <member name="P:MetroWPF.Resources.CommandTextBinder.Item(System.String)">
+            <summary>
+            Gets the <see cref="T:System.String"/> with the specified key.
+            </summary>
+            <value></value>
+        </member>
+        <member name="E:MetroWPF.Resources.CommandTextBinder.PropertyChanged">
+            <summary>
+            Occurs when a property value changes.
+            </summary>
+        </member>
+        <member name="T:MetroWPF.Theme">
+            <summary>
+            Indicates the main theme style.
+            </summary>
+        </member>
+        <member name="F:MetroWPF.Theme.Dark">
+            <summary>
+            Theme has dark background.
+            </summary>
+        </member>
+        <member name="F:MetroWPF.Theme.Light">
+            <summary>
+            Theme has light background.
+            </summary>
+        </member>
+        <member name="T:MetroWPF.ThemeSelector">
+            <summary>
+            Allows retrieval of theme resources based on an accent color.
+            </summary>
+        </member>
+        <member name="M:MetroWPF.ThemeSelector.ApplyTheme(MetroWPF.Theme,MetroWPF.Accent)">
+            <summary>
+            Applies the theme with the accent color theme.
+            </summary>
+            <param name="theme">The theme.</param>
+            <param name="accent">The accent.</param>
+        </member>
+        <member name="P:MetroWPF.ThemeSelector.CurrentTheme">
+            <summary>
+            Gets the current theme.
+            </summary>
+            <value>The current theme.</value>
+        </member>
+        <member name="T:MetroWPF.WindowCommands">
+            <summary>
+            Provides a set of window control commands
+            as a bindable resource object.
+            </summary>
+        </member>
+        <member name="P:MetroWPF.WindowCommands.CloseCommand">
+            <summary>
+            Gets the command that closes the window.
+            </summary>
+            <value>
+            The close command.
+            </value>
+        </member>
+        <member name="P:MetroWPF.WindowCommands.MaximizeCommand">
+            <summary>
+            Gets the command that maximizes the window.
+            </summary>
+            <value>
+            The maximize command.
+            </value>
+        </member>
+        <member name="P:MetroWPF.WindowCommands.RestoreCommand">
+            <summary>
+            Gets the command that restores the window.
+            </summary>
+            <value>
+            The restore command.
+            </value>
+        </member>
+        <member name="P:MetroWPF.WindowCommands.MinimizeCommand">
+            <summary>
+            Gets the command that minimizes the window.
+            </summary>
+            <value>
+            The minimize command.
+            </value>
+        </member>
+        <member name="T:MetroWPF.WindowParameters">
+            <summary>
+            Provides window-related parameter values.
+            </summary>
+        </member>
+        <member name="T:XamlGeneratedNamespace.GeneratedInternalTypeHelper">
+            <summary>
+            GeneratedInternalTypeHelper
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.CreateInstance(System.Type,System.Globalization.CultureInfo)">
+            <summary>
+            CreateInstance
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.GetPropertyValue(System.Reflection.PropertyInfo,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            GetPropertyValue
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.SetPropertyValue(System.Reflection.PropertyInfo,System.Object,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            SetPropertyValue
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.CreateDelegate(System.Type,System.Object,System.String)">
+            <summary>
+            CreateDelegate
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.AddEventHandler(System.Reflection.EventInfo,System.Object,System.Delegate)">
+            <summary>
+            AddEventHandler
+            </summary>
+        </member>
+    </members>
+</doc>
