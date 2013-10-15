@@ -20,6 +20,7 @@ namespace ResolutionActionSystemContext
         private void LoadLookups()
         {
             MeetingTypes = Context.MeetingTypes.ToList();
+            Meetings = Context.Meetings.ToList();
         }
 
         public MeetingUseCase()
@@ -45,6 +46,7 @@ namespace ResolutionActionSystemContext
 
         #region Lookups
         public List<MeetingType> MeetingTypes { get; set; }
+        public List<Meeting> Meetings { get; set; }
         #endregion
 
         
@@ -61,6 +63,7 @@ namespace ResolutionActionSystemContext
 
         public List<MeetingMinute> GetCurrentMeetingMinutes()
         {
+            if (Current == null) return new List<MeetingMinute>();
             return Current.MeetingItemStatuses.Select(currentMeetingStatus => new MeetingMinute(currentMeetingStatus)).ToList();
         }
 

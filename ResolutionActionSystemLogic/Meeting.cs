@@ -28,7 +28,16 @@ namespace ResolutionActionSystemLogic
         {
             get 
             { 
-                return MeetingType == null ? "" : MeetingType.MeetingTypeName + MeetingNumber;
+                return MeetingType == null ? "" : MeetingType.MeetingTypeAbbreviation + MeetingNumber;
+            }
+        }
+
+        [NotMapped]
+        public string MeetingCodeAndType
+        {
+            get
+            {
+                return MeetingType == null ? "" : String.Format("{0} - {1}",MeetingType.MeetingTypeAbbreviation + MeetingNumber,MeetingType.MeetingTypeName);
             }
         }
 

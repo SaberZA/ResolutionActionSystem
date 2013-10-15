@@ -15,7 +15,7 @@ using ResolutionActionSystemLogic.CustomClasses;
 
 namespace ResolutionActionSystem
 {
-    public class CaptureMeetingController<T> :Controller, INotifyPropertyChanged where T: CaptureMeeting
+    public class CaptureMeetingController<T> :Controller, INotifyPropertyChanged, IGetMeeting where T: CaptureMeeting
     {
         protected MeetingUseCase MeetingUseCase { get; set; }
 
@@ -155,6 +155,14 @@ namespace ResolutionActionSystem
             if (handler != null) handler(this, infoMessage);
         }
 
+        public event UIEventHandler UIEventRaised;
+        public delegate void UIEventHandler(object sender, UIEventHandlerArgs args);
+
+        public virtual void OnUIEventRaised(UIEventHandlerArgs args)
+        {
+            var handler = UIEventRaised;
+            if (handler != null) handler(this, args);
+        }
 
         #region ICommands
         public ICommand ReturnAllItemsCommand { get; set; }
@@ -234,14 +242,18 @@ namespace ResolutionActionSystem
             MeetingUseCase.LinkMeetingItems(ScheduledMeetingMinutes);
             MeetingUseCase.Save();
             InformationEventRaised(this, "Meeting Created.\r\nYou can now proceed to edit the Meeting further.");
+            UIEventRaised(this,UIEventHandlerArgs.MeetingCreated);
         }
         #endregion
 
-        
-
-
-
+        public Meeting GetMeeting()
+        {
+            return CurrentMeeting;
+        }
     }
 
-    
+    public interface IGetMeeting
+    {
+        Meeting GetMeeting();
+    }
 }

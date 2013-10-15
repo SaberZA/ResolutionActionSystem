@@ -57,5 +57,11 @@ namespace ResolutionActionSystem
                 menuButton.BorderBrush = menuButton.Tag.Equals(ActiveButtonTag) ? Brushes.LightGray : Brushes.White;
             }
         }
+
+        public void UpdateActiveTab()
+        {
+            SetActiveButton();
+            SetActiveTab();
+        }
     }
 }

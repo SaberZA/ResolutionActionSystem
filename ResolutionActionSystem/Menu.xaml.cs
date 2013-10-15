@@ -31,11 +31,29 @@ namespace ResolutionActionSystem
 
             LoadTabUserControls();
 
-            CreateContext();
-
             InitController();
 
             RegisterMenuControls();
+
+            LoadEvents();
+        }
+
+        private void LoadEvents()
+        {
+            ((CaptureMeetingController<CaptureMeeting>)this.CaptureMeetingUserControl.GetController()).UIEventRaised += UIEventRaised;
+        }
+
+        private void UIEventRaised(object sender, UIEventHandlerArgs args)
+        {
+            if (args == UIEventHandlerArgs.MeetingCreated)
+            {
+                Controller.ActiveButtonTag = "1";
+                Controller.ActiveTabIndex = 1;
+                Controller.UpdateActiveTab();
+
+                ISetMeeting meetingSetter = (EditMeetingController<EditMeeting>)EditMeetingUserControl.GetController();
+                meetingSetter.SetMeeting(((IGetMeeting)this.CaptureMeetingUserControl.GetController()).GetMeeting());
+            }
         }
 
 
@@ -65,12 +83,7 @@ namespace ResolutionActionSystem
             CaptureMeetingUserControl = new CaptureMeeting();
             tabCaptureNewMeeting.Content = CaptureMeetingUserControl;
         }
-
-        private void CreateContext()
-        {
-            var db = new Context();
-        }
-
+        
         private void btnEditMeeting_Click(object sender, RoutedEventArgs e)
         {
 

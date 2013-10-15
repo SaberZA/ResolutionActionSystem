@@ -34,7 +34,7 @@ namespace ResolutionActionSystemLogic.CustomClasses
                 {
                     meetingActions += meetingAction.ActionDescription + ". ";
                 }
-
+                
                 return meetingActions;
             }
         }
@@ -44,6 +44,11 @@ namespace ResolutionActionSystemLogic.CustomClasses
             {
                 return MeetingItem.MeetingItemDesc;
             }
+        }
+
+        public DateTime MeetingItemDueDate
+        {
+            get { return MeetingItem.MeetingItemDueDate; }
         }
 
         private MeetingItem MeetingItem
