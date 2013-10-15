@@ -27,7 +27,6 @@ namespace ResolutionActionSystem
             InitializeComponent();
             InitController();
 
-            RegisterPropertyControls();
         }
 
         public void InitController()
@@ -40,12 +39,6 @@ namespace ResolutionActionSystem
             return this.Controller;
         }
 
-        public void RegisterPropertyControls()
-        {
-            Controller.RegisterPropertyControl(cboMeetingType);
-            Controller.RegisterPropertyControl(dpMeetingDate);
-            Controller.RegisterPropertyControl(lstMeetingItems);
-
-        }
+        
     }
 }

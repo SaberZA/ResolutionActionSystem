@@ -11,6 +11,5 @@ namespace ResolutionActionSystem.Controllers
 
         Controller GetController();
 
-        void RegisterPropertyControls();
     }
 }

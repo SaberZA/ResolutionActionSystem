@@ -123,6 +123,32 @@ namespace ResolutionActionSystemTest
         }
 
         [TestMethod]
+        public void PreviousMeeting_GivenMeeting_ShouldReturnPreviousMeetingProperties()
+        {
+            var uc = new MeetingUseCase();
+
+            uc.CreateNewMeeting();
+
+            var meetingType = uc.MeetingTypes.FirstOrDefault(p => p.MeetingTypeName == "MANCO");
+
+            if (meetingType == null)
+            {
+                meetingType = new MeetingType();
+                meetingType.MeetingTypeName = "MANCO";
+                uc.AddNewMeetingType(meetingType);
+                uc.Save();
+            }
+
+            uc.UpdateCurrentMeeting_MeetingType(meetingType);
+            uc.UpdateCurrentMeeting_MeetingDate(DateTime.Today.AddDays(5));
+            //uc.Save();
+
+            var hasPreviousMeeting = (uc.Current.MeetingNumber == (uc.Current.PreviousMeeting.MeetingNumber + 1));
+
+            Assert.IsTrue(hasPreviousMeeting);
+        }
+
+        [TestMethod]
         public void PrintMeetingMinutes_GivenMeetingId1_ShouldReturnMinutes()
         {
             var db = new Context();
@@ -133,7 +159,7 @@ namespace ResolutionActionSystemTest
             List<MeetingMinute> meetingMinutes = uc.GetCurrentMeetingMinutes();
 
             var hasMeetingMinutes = meetingMinutes.Count > 0;
-            string allMinutes = "";// meetingMinutes.Select(p => p.ToString() + "\r\n").ToString();
+            string allMinutes = "";
             foreach (var meetingMinute in meetingMinutes)
             {
                 allMinutes += meetingMinute.ToString() + "\r\n";
@@ -186,6 +212,13 @@ namespace ResolutionActionSystemTest
 
             var meetingItemStatusLu =
                 db.MeetingItemStatusLus.FirstOrDefault(p => p.MeetingItemStatusDesc == "WIP");
+
+            if (meetingItemStatusLu == null)
+            {
+                db.MeetingItemStatusLus.Add(new MeetingItemStatusLu() {MeetingItemStatusDesc = "WIP"});
+                db.SaveChanges();
+            }
+
 
             uc.UpdateCurrentMeetingItem_Status(meetingItemStatusLu);
 

@@ -14,26 +14,24 @@ namespace ResolutionActionSystemContext
         public MeetingUseCase(Context context)
         {
             this.Context = context;
+            LoadLookups();
+        }
+
+        private void LoadLookups()
+        {
+            MeetingTypes = Context.MeetingTypes.ToList();
         }
 
         public MeetingUseCase()
         {
             this.Context = new Context();
-            MeetingTypes = Context.MeetingTypes.ToList();
+            LoadLookups();
         }
 
         protected Context Context { get; private set; }
-
         
-
         public Meeting Current { get; set; }
-
-        public MeetingType MeetingType
-        {
-            get { return Current.MeetingType; }
-            set { Current.MeetingType = value; }
-        }
-
+        
         public MeetingMinute CurrentMeetingItem { get; set; }
 
         protected bool CurrentHasChanges { get; set; }
@@ -42,26 +40,11 @@ namespace ResolutionActionSystemContext
 
         public void AddMeetingItem(string meetingItemDesc, DateTime meetingItemDueDate)
         {
-            var meetingItem = new MeetingItem
-                {
-                    MeetingItemDesc = meetingItemDesc,
-                    MeetingItemDueDate = meetingItemDueDate
-                };
-            Context.MeetingItems.Add(meetingItem);
-
-            var meetingItemStatus = new MeetingItemStatus();
-            meetingItemStatus.Meeting = Current;
-            meetingItemStatus.MeetingItem = meetingItem;
-            meetingItemStatus.MeetingItemStatusDate = DateTime.Now;
-            meetingItemStatus.MeetingItemStatusLu =
-                Context.MeetingItemStatusLus.FirstOrDefault(p => p.MeetingItemStatusDesc.ToUpper() == "CREATED");
-            Context.MeetingItemStatuses.Add(meetingItemStatus);
-
-            meetingItem.MeetingItemStatuses.Add(meetingItemStatus);
-
-            Current.MeetingItemStatuses.Add(meetingItemStatus);
+            
             
         }
+
+
         #endregion
 
         #region Lookups
@@ -83,6 +66,13 @@ namespace ResolutionActionSystemContext
         public List<MeetingMinute> GetCurrentMeetingMinutes()
         {
             return Current.MeetingItemStatuses.Select(currentMeetingStatus => new MeetingMinute(currentMeetingStatus)).ToList();
+        }
+
+        public List<MeetingMinute> GetPreviousMeetingMinutes()
+        {
+            if (Current.PreviousMeeting == null) return new List<MeetingMinute>();
+            
+            return Current.PreviousMeeting.MeetingItemStatuses.Select(currentMeetingStatus => new MeetingMinute(currentMeetingStatus)).ToList();
         }
 
         public MeetingMinute GetMeetingMinute(int meetingItemStatusId)
@@ -122,6 +112,71 @@ namespace ResolutionActionSystemContext
             Current = Context.Meetings.FirstOrDefault(p => p.MeetingId == Current.MeetingId);
         }
 
-        
+
+        public void UpdateCurrentMeeting_MeetingType(MeetingType meetingType)
+        {
+            var previousMeetings =
+                Context.Meetings.Where(p => p.MeetingType.MeetingTypeName == meetingType.MeetingTypeName);
+
+            Meeting previousMeeting = null;
+            int mostRecentMeetingNumber = previousMeetings.Max(k => k.MeetingNumber);
+            if (previousMeetings.Any())
+                previousMeeting =
+                    previousMeetings.FirstOrDefault(p => p.MeetingNumber == mostRecentMeetingNumber);
+
+            if (previousMeeting != null)
+            {
+                Current.PreviousMeeting = previousMeeting;
+                Current.MeetingNumber = ++mostRecentMeetingNumber;
+            }
+            else
+            {
+                Current.MeetingNumber = 1;
+            }
+
+            Current.MeetingType = meetingType;
+        }
+
+        public void AddNewMeetingType(MeetingType meetingType)
+        {
+            Context.MeetingTypes.Add(meetingType);
+        }
+
+        public void UpdateCurrentMeeting_MeetingDate(DateTime meetingDate)
+        {
+            Current.MeetingDate = meetingDate;
+        }
+
+        public void AddMeetingItem(MeetingMinute currentMeetingItem)
+        {
+            var meetingItem = new MeetingItem
+            {
+                MeetingItemDesc = currentMeetingItem.MeetingItemDescription,
+                MeetingItemDueDate = currentMeetingItem.MeetingItemStatus.MeetingItem.MeetingItemDueDate,
+                PersonResponsible = currentMeetingItem.MeetingItemStatus.MeetingItem.PersonResponsible
+            };
+            Context.MeetingItems.Add(meetingItem);
+
+            var meetingItemStatus = new MeetingItemStatus();
+            meetingItemStatus.Meeting = Current;
+            meetingItemStatus.MeetingItem = meetingItem;
+            meetingItemStatus.MeetingItemStatusDate = DateTime.Now;
+            meetingItemStatus.MeetingItemStatusLu =
+                Context.MeetingItemStatusLus.FirstOrDefault(p => p.MeetingItemStatusDesc.ToUpper() == currentMeetingItem.Status);
+            Context.MeetingItemStatuses.Add(meetingItemStatus);
+
+            meetingItem.MeetingItemStatuses.Add(meetingItemStatus);
+
+            Current.MeetingItemStatuses.Add(meetingItemStatus);
+        }
+
+
+        public void RemoveMeetingItem(MeetingMinute scheduledMeetingItem)
+        {
+            Context.MeetingItems.Remove(scheduledMeetingItem.MeetingItemStatus.MeetingItem);
+            Current.MeetingItemStatuses.Remove(scheduledMeetingItem.MeetingItemStatus);
+            Context.MeetingItemStatuses.Remove(scheduledMeetingItem.MeetingItemStatus);
+            
+        }
     }
 }

@@ -54,6 +54,7 @@ namespace ResolutionActionSystem
             foreach (var menuButton in MenuButtons)
             {
                 menuButton.Background = menuButton.Tag.Equals(ActiveButtonTag) ? Brushes.LightGray : Brushes.White;
+                menuButton.BorderBrush = menuButton.Tag.Equals(ActiveButtonTag) ? Brushes.LightGray : Brushes.White;
             }
         }
     }

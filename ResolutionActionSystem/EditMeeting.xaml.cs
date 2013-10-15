@@ -38,9 +38,5 @@ namespace ResolutionActionSystem
             return this.Controller;
         }
 
-        public void RegisterPropertyControls()
-        {
-            
-        }
     }
 }

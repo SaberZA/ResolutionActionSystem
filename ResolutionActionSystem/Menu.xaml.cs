@@ -33,7 +33,7 @@ namespace ResolutionActionSystem
 
             InitController();
 
-            RegisterPropertyControls();
+            RegisterMenuControls();
         }
 
 
@@ -47,7 +47,7 @@ namespace ResolutionActionSystem
             return this.Controller;
         }
 
-        public void RegisterPropertyControls()
+        public void RegisterMenuControls()
         {
             Controller.RegisterButton(btnCaptureNewMeeting);
             Controller.RegisterButton(btnEditMeeting);

@@ -26,7 +26,9 @@ namespace ResolutionActionSystemLogic.CustomClasses
         {
             get
             {
+                
                 var meetingActions = "";
+                if (MeetingActions == null) return meetingActions;
 
                 foreach (var meetingAction in MeetingActions)
                 {
@@ -75,7 +77,7 @@ namespace ResolutionActionSystemLogic.CustomClasses
 
         public override string ToString()
         {
-            return String.Format("{0}\t{1,10}\t{2,10}\t{3,10}", this.MeetingItemDescription, this.Comment, this.Status, this.PersonResponsibleName);
+            return String.Format("{0}{1,20}{2,20}{3,20}", this.MeetingItemDescription, this.Comment, this.Status, this.PersonResponsibleName);
         }
 
         public void UpdateMeetingItemStatus(MeetingItemStatusLu meetingItemStatus)

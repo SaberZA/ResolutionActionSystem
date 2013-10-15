@@ -14,5 +14,15 @@ namespace ResolutionActionSystemLogic
         public int MeetingTypeId { get; set; }
         [Required]
         public string MeetingTypeName { get; set; }
+
+        [NotMapped]
+        public string MeetingTypeAbbreviation
+        {
+            get 
+            { 
+                var tokenisedMeetingTime = MeetingTypeName.Split(new string[] {" "}, StringSplitOptions.None);
+                return tokenisedMeetingTime.Aggregate("", (current, s) => current + s.First().ToString().ToUpper());
+            }
+        }
     }
 }

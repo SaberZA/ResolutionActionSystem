@@ -6,22 +6,23 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" Width="950" Height="624">
     <Grid Height="623" Width="946">
-        <Grid Background="#FFC1C3CE" Margin="0,0,0,0">
-            <DockPanel HorizontalAlignment="Left" Name="dockPanel1" Width="928" />
+        <Grid Background="LightGray" Margin="0,0,0,0">
+            <DockPanel HorizontalAlignment="Left" Name="dockPanel1" Width="946" />
             <StackPanel Background="White" Margin="0,0,744,0" Name="stackPanel1" Width="200">
                 <TextBlock FontFamily="Segoe UI" FontSize="20" FontWeight="Normal" Height="93" Name="lblHeading" Padding="15,15,0,0" Text="Resolution Action System" TextAlignment="Left" TextWrapping="Wrap" />
                 <Label Background="#00000000" Content="Meetings    ❯" FontSize="25" Height="48" Name="lblMeetings" Padding="25,5,5,5" />
-                <Button BorderBrush="#00000000" BorderThickness="0" ClickMode="Release" ClipToBounds="False" Content="Capture New Meeting" FontSize="14" Height="70" HorizontalContentAlignment="Left" Name="btnCaptureNewMeeting" OverridesDefaultStyle="False" Padding="40,1,1,1" Width="200" Click="btnCaptureNewMeeting_Click" Tag="0">
+                <Button BorderBrush="#00000000" BorderThickness="1" ClickMode="Release" ClipToBounds="False" Content="Capture New Meeting" FontSize="14" Height="70" HorizontalContentAlignment="Left" Name="btnCaptureNewMeeting" OverridesDefaultStyle="False" Padding="40,1,1,1" Width="200" Click="btnCaptureNewMeeting_Click" Tag="0"
+                        Style="{DynamicResource BlankButtonStyle}">
                     <Button.Background>
                         <SolidColorBrush />
                     </Button.Background>
                 </Button>
-                <Button Background="White" BorderBrush="#00000000" BorderThickness="0" Click="btnEditMeeting_Click" ClipToBounds="False" Content="Edit Meeting" FontSize="14" Height="70" HorizontalContentAlignment="Left" Name="btnEditMeeting" Padding="40,1,1,1" Width="200" Tag="1" />
+                <Button Background="White" BorderBrush="#00000000" BorderThickness="1" Click="btnEditMeeting_Click" ClipToBounds="False" Content="Edit Meeting" FontSize="14" Height="70" HorizontalContentAlignment="Left" Name="btnEditMeeting" Padding="40,0,0,1" Width="200" Tag="1" Style="{DynamicResource BlankButtonStyle}"/>
                 <Label Content="Reports    ❯" FontSize="25" Height="48" Name="lblReports" Padding="25,5,5,5" />
-                <Button Background="White" BorderBrush="#00000000" BorderThickness="0" ClipToBounds="False" Content="Print Meeting Minutes" FontSize="14" Height="70" HorizontalContentAlignment="Left" Name="btnPrintMeetingMinutes" Padding="40,1,1,1" Width="200" Tag="2" />
-                <Button Background="White" BorderBrush="#00000000" BorderThickness="0" ClipToBounds="False" Content="View Minutes History" FontSize="14" Height="70" HorizontalContentAlignment="Left" Name="btnViewMinutesHistory" Padding="40,1,1,1" Width="200" Tag="3" />
+                <Button Background="White" BorderBrush="#00000000" BorderThickness="1" ClipToBounds="False" Content="Print Meeting Minutes" FontSize="14" Height="70" HorizontalContentAlignment="Left" Name="btnPrintMeetingMinutes" Padding="40,1,1,1" Width="200" Tag="2" Style="{DynamicResource BlankButtonStyle}"/>
+                <Button Background="White" BorderBrush="#00000000" BorderThickness="1" ClipToBounds="False" Content="View Minutes History" FontSize="14" Height="70" HorizontalContentAlignment="Left" Name="btnViewMinutesHistory" Padding="40,1,1,1" Width="200" Tag="3" Style="{DynamicResource BlankButtonStyle}"/>
             </StackPanel>
-            <TabControl Background="#00000000" BorderBrush="#00000000" BorderThickness="0" HorizontalContentAlignment="Center" Margin="194,0,0,0" Name="tabControl1" SelectedIndex="4" TabStripPlacement="Bottom" VerticalContentAlignment="Center">
+            <TabControl Background="#00000000" BorderBrush="#00000000" BorderThickness="0" HorizontalContentAlignment="Center" Margin="194,0,0,48" Name="tabControl1" SelectedIndex="4" TabStripPlacement="Bottom" VerticalContentAlignment="Center">
                 <TabItem Header="CaptureNewMeeting" Name="tabCaptureNewMeeting" Visibility="Hidden" Tag="0">
                     <Grid />
                 </TabItem>
@@ -29,7 +30,7 @@
                 <TabItem Header="PrintMeetingMinutes" Name="tabPrintMeetingMinutes" Visibility="Hidden" Tag="2" />
                 <TabItem Header="ViewMinutesHistory" Name="tabViewMinutesHistory" Visibility="Hidden" Tag="3" />
                 <TabItem Header="LandingPage" Name="tabLandingPage" Tag="4" Visibility="Hidden">
-                    <Grid Height="593" Name="grid1" Width="747">
+                    <Grid Height="588" Name="grid1" Width="747">
                         <Label Background="#00000000" Content="Welcome to the Resolution Action System" FontSize="25" Height="48" Margin="92,41,91,504" Name="label1" Padding="25,5,5,5" />
                         <Label Content="Please select an option on the left to get started." Height="28" HorizontalAlignment="Left" Margin="186,101,0,0" Name="label2" VerticalAlignment="Top" FontSize="14" />
                         <Label Content="Created by: Steven van der Merwe" Height="28" HorizontalAlignment="Left" Margin="92,230,0,0" Name="label3" VerticalAlignment="Top" />
