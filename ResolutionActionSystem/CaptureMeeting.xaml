@@ -43,6 +43,8 @@
         <Button Content="❮❮" Height="36" HorizontalAlignment="Left" Margin="308,398,0,0" Name="btnReturnAllItems" VerticalAlignment="Top" Width="37" 
                 Command="{Binding Path=ReturnAllItemsCommand}"
                 />
-        <Button Content="Create Meeting" Height="23" HorizontalAlignment="Left" Margin="12,492,0,0" Name="btnCreateMeeting" VerticalAlignment="Top" Width="108" />
+        <Button Content="Create Meeting" Height="23" HorizontalAlignment="Left" Margin="12,492,0,0" Name="btnCreateMeeting" VerticalAlignment="Top" Width="108" 
+                Command="{Binding Path=CreateMeetingCommand}"
+                />
     </Grid>
 </UserControl>

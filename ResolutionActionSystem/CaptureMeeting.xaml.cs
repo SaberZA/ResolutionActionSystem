@@ -26,7 +26,12 @@ namespace ResolutionActionSystem
         {
             InitializeComponent();
             InitController();
+            this.Controller.InformationEventRaised += new CaptureMeetingController<CaptureMeeting>.InformationEventHandler(Controller_InformationEventRaised);
+        }
 
+        void Controller_InformationEventRaised(object sender, string infoMessage)
+        {
+            MessageBox.Show(infoMessage, "Information", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         public void InitController()

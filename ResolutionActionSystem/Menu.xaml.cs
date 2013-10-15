@@ -22,6 +22,8 @@ namespace ResolutionActionSystem
     public partial class Menu : UserControl, IControllable
     {
         protected MenuController<Menu> Controller { get; set; }
+        protected EditMeeting EditMeetingUserControl { get; set; }
+        protected CaptureMeeting CaptureMeetingUserControl { get; set; }
 
         public Menu()
         {
@@ -57,11 +59,11 @@ namespace ResolutionActionSystem
 
         private void LoadTabUserControls()
         {
-            var editMeetingUserControl = new EditMeeting();
-            tabEditMeeting.Content = editMeetingUserControl;
+            EditMeetingUserControl = new EditMeeting();
+            tabEditMeeting.Content = EditMeetingUserControl;
 
-            var captureMeetingUserControl = new CaptureMeeting();
-            tabCaptureNewMeeting.Content = captureMeetingUserControl;
+            CaptureMeetingUserControl = new CaptureMeeting();
+            tabCaptureNewMeeting.Content = CaptureMeetingUserControl;
         }
 
         private void CreateContext()

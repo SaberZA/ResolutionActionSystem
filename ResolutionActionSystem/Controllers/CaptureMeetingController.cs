@@ -19,6 +19,7 @@ namespace ResolutionActionSystem
     {
         protected MeetingUseCase MeetingUseCase { get; set; }
 
+        
 
         public CaptureMeetingController(T userControl) 
             : base(userControl)
@@ -35,9 +36,12 @@ namespace ResolutionActionSystem
             TransferAllItemsCommand = new RelayCommand(TransferAllItems_Execute,TransferAllItems_CanExecute);
             ReturnItemCommand = new RelayCommand(ReturnItem_Execute,ReturnItem_CanExecute);
             ReturnAllItemsCommand =new RelayCommand(ReturnAllItems_Execute,ReturnAllItems_CanExecute);
+            CreateMeetingCommand = new RelayCommand(CreateMeeting_Execute,CreateMeeting_CanExecute);
 
             ScheduledMeetingMinutes = new ObservableCollection<MeetingMinute>();
         }
+
+        
 
         void CaptureMeetingController_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
@@ -142,6 +146,16 @@ namespace ResolutionActionSystem
         }
         #endregion
 
+        public event InformationEventHandler InformationEventRaised;
+        public delegate void InformationEventHandler(object sender, string infoMessage);
+
+        public virtual void OnInformationEventRaised(string infoMessage)
+        {
+            var handler = InformationEventRaised;
+            if (handler != null) handler(this, infoMessage);
+        }
+
+
         #region ICommands
         public ICommand ReturnAllItemsCommand { get; set; }
         private void ReturnAllItems_Execute()
@@ -171,7 +185,7 @@ namespace ResolutionActionSystem
         {
             if (ScheduledMeetingMinutes.Count == 0) return;
 
-            AddAvailableMeetingMinute(CurrentMeetingItem);
+            AddAvailableMeetingMinute(ScheduledMeetingItem);
 
             RemoveScheduledMeetingMinute(ScheduledMeetingItem);
         }
@@ -208,7 +222,26 @@ namespace ResolutionActionSystem
 
             RemoveAvailableMeetingMinute(CurrentMeetingItem);
         }
+
+        public ICommand CreateMeetingCommand { get; set; }
+        private bool CreateMeeting_CanExecute()
+        {
+            return true;
+        }
+
+        private void CreateMeeting_Execute()
+        {
+            MeetingUseCase.LinkMeetingItems(ScheduledMeetingMinutes);
+            MeetingUseCase.Save();
+            InformationEventRaised(this, "Meeting Created.\r\nYou can now proceed to edit the Meeting further.");
+        }
         #endregion
 
+        
+
+
+
     }
+
+    
 }

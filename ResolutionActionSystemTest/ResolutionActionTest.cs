@@ -107,17 +107,17 @@ namespace ResolutionActionSystemTest
         {
             var db = new Context();
             var meeting = db.Meetings.FirstOrDefault(p => p.MeetingNumber == 1);
-
+            var person = db.Persons.FirstOrDefault();
             var uc = new MeetingUseCase(db) {Current = meeting};
 
-            if (!meeting.MeetingItemStatuses.Any(p=>p.MeetingItem.MeetingItemDesc.ToUpper() == "EFv2".ToUpper()))
+            if (!meeting.MeetingItemStatuses.Any(p => p.MeetingItem.MeetingItemDesc.ToUpper() == "EFv2".ToUpper()))
             {
-                uc.AddMeetingItem("EFv2", DateTime.Now);
+                uc.AddNewMeetingItem("EFv2", DateTime.Now,person);
                 uc.Save();
             }
             
             var meetingItemExists =
-                 uc.Current.MeetingItemStatuses.Count(p => p.MeetingItem.MeetingItemDesc.ToUpper() == "EFV2") > 0;
+                 uc.Current.MeetingItemStatuses.Count(p => p.MeetingItem.MeetingItemDesc.ToUpper() == "LEARN WPF") > 0;
 
             Assert.IsTrue(meetingItemExists);
         }
@@ -189,6 +189,7 @@ namespace ResolutionActionSystemTest
             if (!db.Persons.Any(p=>p.FirstName == "Bob" && p.LastName == "Smith"))
             {
                 uc.AddPerson(personResponsible);
+                uc.Save();
             }
 
             uc.UpdateCurrentMeetingItem_PersonResponsible(personResponsible);
@@ -233,11 +234,12 @@ namespace ResolutionActionSystemTest
         [TestMethod]
         public void ConstructMeetingItem_GivenDescription_ShouldReturnMeetingItem()
         {
+            var db = new Context();
             var meetingItem = new MeetingItem();
             meetingItem.MeetingItemDesc = "Learn WPF";
             meetingItem.MeetingItemDueDate = DateTime.Now.AddDays(2);
-
-            var db = new Context();
+            meetingItem.PersonResponsible = db.Persons.FirstOrDefault();
+            
 
             if (!db.MeetingItems.Any(p => p.MeetingItemDesc.ToUpper() == "Learn WPF".ToUpper())) ;
             {
@@ -260,6 +262,7 @@ namespace ResolutionActionSystemTest
             var meetingAction = new MeetingAction();
             meetingAction.ActionDescription = "Learn TDD";
             meetingAction.MeetingItemStatus = meetingItemStatus;
+            db.MeetingActions.Add(meetingAction);
 
             if (!db.MeetingActions.Any(p => p.ActionDescription.ToUpper() == "Learn TDD".ToUpper()))
             {
