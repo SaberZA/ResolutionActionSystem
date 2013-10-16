@@ -85,7 +85,7 @@ namespace ResolutionActionSystemContext
 
         public MeetingMinute GetMeetingMinute(int meetingItemStatusId)
         {
-            return new MeetingMinute(Current.MeetingItemStatuses.FirstOrDefault(p=>p.MeetingItemInstanceId == meetingItemStatusId));
+            return new MeetingMinute(Current.MeetingItemStatuses.FirstOrDefault(p=>p.MeetingItemStatusId == meetingItemStatusId));
         }
 
         public void AddPerson(Person personResponsible)

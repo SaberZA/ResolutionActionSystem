@@ -48,14 +48,6 @@
   <ItemGroup>
     <Compile Include="Context\Context.cs" />
     <Compile Include="MeetingUseCase.cs" />
-    <Compile Include="Migrations\201310131956007_Initial.cs" />
-    <Compile Include="Migrations\201310131956007_Initial.Designer.cs">
-      <DependentUpon>201310131956007_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201310141703127_Initial1.cs" />
-    <Compile Include="Migrations\201310141703127_Initial1.Designer.cs">
-      <DependentUpon>201310141703127_Initial1.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -69,14 +61,6 @@
       <Project>{FE8FEFF5-B772-405A-8C4D-647131AF548E}</Project>
       <Name>ResolutionActionSystemLogic</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201310131956007_Initial.resx">
-      <DependentUpon>201310131956007_Initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201310141703127_Initial1.resx">
-      <DependentUpon>201310141703127_Initial1.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

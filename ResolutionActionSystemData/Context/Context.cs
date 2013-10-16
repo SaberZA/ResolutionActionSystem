@@ -6,7 +6,7 @@ namespace ResolutionActionSystemContext
     public class Context : DbContext
     {
         public Context()
-              : base() 
+            : base("ResolutionActionSystem")
         {
             
         }

@@ -12,6 +12,7 @@ namespace ResolutionActionSystemContext.Migrations
         {
             AutomaticMigrationsEnabled = true;
             AutomaticMigrationDataLossAllowed = true;
+            
         }
 
         protected override void Seed(ResolutionActionSystemContext.Context context)

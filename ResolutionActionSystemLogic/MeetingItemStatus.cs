@@ -11,7 +11,7 @@ namespace ResolutionActionSystemLogic
     public class MeetingItemStatus
     {
         [Key]
-        public int MeetingItemInstanceId { get; set; }
+        public int MeetingItemStatusId { get; set; }
 
         //[ForeignKey("MeetingItemStatusLuId"), Required]
         //public int MeetingItemStatusLuId { get; set; }

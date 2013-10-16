@@ -19,10 +19,12 @@ namespace ResolutionActionSystemLogic
         //[ForeignKey("PersonId"), Required]
         //public int PersonResponsibleId { get; set; }
 
-        //[ForeignKey("MeetingItemInstanceId"), Required]
-        //public int MeetingItemInstanceId { get; set; }
+        //[ForeignKey("MeetingItemStatusId"), Required]
+        //public int MeetingItemStatusId { get; set; }
 
         public virtual MeetingItemStatus MeetingItemStatus { get; set; }
+
+        public virtual Person PersonResponsible { get; set; }
 
         public override string ToString()
         {

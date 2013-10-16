@@ -178,7 +178,7 @@ namespace ResolutionActionSystemTest
             
             uc.Current = db.Meetings.FirstOrDefault();
             //int meetingItemStatusId = 3;
-            int meetingItemStatusId = db.MeetingItemStatuses.FirstOrDefault().MeetingItemInstanceId;
+            int meetingItemStatusId = db.MeetingItemStatuses.FirstOrDefault().MeetingItemStatusId;
             //uc.Current = uc.GetMeetingById(meetingId);
             uc.CurrentMeetingItem = uc.GetMeetingMinute(meetingItemStatusId);
 
@@ -208,7 +208,7 @@ namespace ResolutionActionSystemTest
             var uc = new MeetingUseCase(db);
 
             uc.Current = db.Meetings.FirstOrDefault();
-            int meetingItemStatusId = db.MeetingItemStatuses.FirstOrDefault().MeetingItemInstanceId;
+            int meetingItemStatusId = db.MeetingItemStatuses.FirstOrDefault().MeetingItemStatusId;
             uc.CurrentMeetingItem = uc.GetMeetingMinute(meetingItemStatusId);
 
             var meetingItemStatusLu =
