@@ -76,6 +76,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Controllers\UIEventHandlerArgs.cs" />
+    <Compile Include="MeetingTypeValidation.cs" />
     <Compile Include="EditMeetingPopups\EditItemStatus.xaml.cs">
       <DependentUpon>EditItemStatus.xaml</DependentUpon>
     </Compile>
@@ -162,7 +163,9 @@
       <Name>ResolutionActionSystemLogic</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Controllers\Validation\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

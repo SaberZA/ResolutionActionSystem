@@ -15,7 +15,7 @@ using ResolutionActionSystemLogic.CustomClasses;
 
 namespace ResolutionActionSystem
 {
-    public class CaptureMeetingController<T> :Controller, INotifyPropertyChanged, IGetMeeting where T: CaptureMeeting
+    public class CaptureMeetingController<T> :Controller, INotifyPropertyChanged, IGetMeeting, IDataErrorInfo where T: CaptureMeeting
     {
         protected MeetingUseCase MeetingUseCase { get; set; }
 
@@ -253,6 +253,24 @@ namespace ResolutionActionSystem
         {
             return CurrentMeeting;
         }
+
+        public string this[string name]
+        {
+            get
+            {
+                string result = null;
+                if (name == "CurrentMeetingType")
+                {
+                    if (CurrentMeetingType == null)
+                    {
+                        result = "Meeting Type must not be empty.";
+                    }
+                }
+                return result;
+            }
+        }
+
+        public string Error { get; private set; }
     }
 
     public interface IGetMeeting

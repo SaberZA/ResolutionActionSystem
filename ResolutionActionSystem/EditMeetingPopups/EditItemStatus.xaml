@@ -6,9 +6,10 @@
     <Grid Background="LightGray">
         <ComboBox Height="23" HorizontalAlignment="Left" Margin="88,97,0,0" Name="cboItemStatus" VerticalAlignment="Top" Width="178" 
                   ItemsSource="{Binding Path=MeetingItemStatusLus}"
-                  SelectedItem="{Binding Path=SelectedMeetingItemStatusLu}"
+                  SelectedItem="{Binding Path=SelectedMeetingItemStatusLu, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                   DisplayMemberPath="MeetingItemStatusDesc"
                   SelectedValuePath="MeetingItemStatusLuId"
+                  
                   />
         <Label Content="Selected Item: " Height="28" HorizontalAlignment="Left" Margin="12,12,0,0" Name="label1" VerticalAlignment="Top" Width="98" FontSize="14" />
         <Label Content="Please select new status for selected item." Height="28" HorizontalAlignment="Left" Margin="21,46,0,0" Name="lblInstructions" VerticalAlignment="Top" FontStyle="Italic" />

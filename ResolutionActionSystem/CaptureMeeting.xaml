@@ -4,17 +4,25 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:resolutionActionSystem="clr-namespace:ResolutionActionSystem"
              mc:Ignorable="d" 
              d:DesignHeight="367" d:DesignWidth="430" Width="725" Height="558">
+    
     <Grid Width="Auto" Height="Auto">
+        
+        
+        
         <Label Background="#00000000" Content="Capture New Meeting" FontSize="25" Height="48" HorizontalAlignment="Left" Margin="10,10,0,500" Name="lblCaptureMeetingHeader" Padding="15,5,5,5" Width="275" />
         <Label Content="Meeting Type:" Height="28" HorizontalAlignment="Left" Margin="12,100,0,0" Name="lblMeetingTypeHeader" VerticalAlignment="Top" Width="92" />
         <ComboBox Height="23" HorizontalAlignment="Left" Margin="101,105,0,0" Name="cboMeetingType" VerticalAlignment="Top" Width="184" 
                   ItemsSource="{Binding Path=MeetingTypes}"
+                  SelectedItem="{Binding Path=CurrentMeetingType, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                   DisplayMemberPath="MeetingTypeName"
-                  SelectedValuePath="MeetingTypeId" Tag="MeetingType"
-                  SelectedItem="{Binding Path=CurrentMeetingType}"
-                  />
+                  SelectedValuePath="MeetingTypeId"
+                  Style="{StaticResource StandardComboBoxStyle}">
+        </ComboBox>
+
+
         <Label Content="Meeting Date:" Height="28" HorizontalAlignment="Left" Margin="12,134,0,0" Name="label1" VerticalAlignment="Top" Width="92" />
         <DatePicker Height="25" HorizontalAlignment="Left" Margin="101,137,0,0" Name="dpMeetingDate" VerticalAlignment="Top" Width="184" Tag="MeetingDate" 
                     SelectedDate="{Binding Path=CurrentMeetingDate}"

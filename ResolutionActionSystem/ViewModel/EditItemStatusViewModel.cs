@@ -12,7 +12,7 @@ using ResolutionActionSystemLogic.CustomClasses;
 
 namespace ResolutionActionSystem.ViewModel
 {
-    public class EditItemStatusViewModel : INotifyPropertyChanged
+    public class EditItemStatusViewModel : INotifyPropertyChanged, IDataErrorInfo
     {
         private MeetingMinute _currentMeetingItem;
         private MeetingItemStatusLu _selectedMeetingItemStatusLu;
@@ -82,5 +82,23 @@ namespace ResolutionActionSystem.ViewModel
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
+
+        public string this[string name]
+        {
+            get
+            {
+                string result = null;
+                if (name == "SelectedMeetingItemStatusLu")
+                {
+                    if (SelectedMeetingItemStatusLu == null)
+                    {
+                        result = "The new Item Status must not be empty.";
+                    }
+                }
+                return result;
+            }
+        }
+
+        public string Error { get; private set; }
     }
 }
