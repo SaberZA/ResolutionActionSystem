@@ -7,9 +7,9 @@ using System.Windows.Media;
 
 namespace ResolutionActionSystem
 {
-    public class MenuController<T> : Controller where T: Menu
+    public class MenuViewModel<T> : Controller where T: Menu
     {
-        public MenuController(T menuControl)
+        public MenuViewModel(T menuControl)
             : base(menuControl)
         {
             MenuButtons = new List<Button>();

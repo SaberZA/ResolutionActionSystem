@@ -14,11 +14,11 @@ using ResolutionActionSystemLogic.CustomClasses;
 
 namespace ResolutionActionSystem
 {
-    public class EditMeetingController<T> : Controller, INotifyPropertyChanged, ISetMeeting, ISetStatus where T: EditMeeting
+    public class EditMeetingViewModel<T> : Controller, INotifyPropertyChanged, ISetMeeting, ISetStatus where T: EditMeeting
     {
         public MeetingUseCase MeetingUseCase { get; set; }
-
-        public EditMeetingController(T userControl) 
+        
+        public EditMeetingViewModel(T userControl) 
             : base(userControl)
         {
             InitModel();
@@ -26,16 +26,15 @@ namespace ResolutionActionSystem
             EditItemStatusCommand = new RelayCommand(EditItemStatus_Execute, EditItemStatus_CanExecute);
             SaveItemCommand = new RelayCommand(SaveItem_Execute, SaveItem_CanExecute);
             CancelItemCommand = new RelayCommand(CancelItem_Execute, CancelItem_CanExecute);
+            SelectMeetingCommand = new RelayCommand(SelectMeeting_Execute, SelectMeeting_CanExecute);
         }
-
         
-        
+        private bool CurrentMeetingItemHasChanges { get; set; }
 
         private void InitModel()
         {
             var meetingUseCase = new MeetingUseCase();
             this.MeetingUseCase = meetingUseCase;
-            this.PrimaryControl.DataContext = this;
         }
 
         public ObservableCollection<Meeting> Meetings
@@ -49,9 +48,21 @@ namespace ResolutionActionSystem
                 return meetings;
             }
         }
-        
+
+        public Meeting SelectedMeeting
+        {
+            get { return _selectedMeeting; }
+            set
+            {
+                if (Equals(value, _selectedMeeting)) return;
+                _selectedMeeting = value;
+                OnPropertyChanged("SelectedMeeting");
+            }
+        }
+
         private Meeting _currentMeeting;
         private MeetingMinute _currentMeetingItem;
+        private Meeting _selectedMeeting;
 
         public Meeting CurrentMeeting
         {
@@ -118,14 +129,17 @@ namespace ResolutionActionSystem
         {
             MeetingUseCase.Current = CurrentMeeting;
             MeetingUseCase.Save();
+            CurrentMeetingItemHasChanges = false;
             MeetingIsNew = true;
             CurrentMeeting = MeetingUseCase.Current;
             OnPropertyChanged("");
+            OnInformationEventRaised("Meeting Item has been saved.");
         }
 
         private void Cancel()
         {
             MeetingUseCase.Cancel();
+            CurrentMeetingItemHasChanges = false;
             MeetingIsNew = true;
             CurrentMeeting = MeetingUseCase.Current;
             OnPropertyChanged("");
@@ -140,9 +154,22 @@ namespace ResolutionActionSystem
             var handler = PropertyChanged;
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        
+
         #endregion
 
         #region Events
+
+        public event InformationEventHandler InformationEventRaised;
+        public delegate void InformationEventHandler(object sender, string infoMessage);
+
+        public virtual void OnInformationEventRaised(string infoMessage)
+        {
+            var handler = InformationEventRaised;
+            if (handler != null) handler(this, infoMessage);
+        }
+        
         public event UIEventHandler UIEventRaised;
         public delegate void UIEventHandler(object sender, UIEventHandlerArgs args);
 
@@ -169,7 +196,7 @@ namespace ResolutionActionSystem
         private bool CancelItem_CanExecute()
         {
             if (CurrentMeetingItem == null) return false;
-            return true;
+            return CurrentMeetingItemHasChanges;
         }
 
         private void CancelItem_Execute()
@@ -181,7 +208,7 @@ namespace ResolutionActionSystem
         private bool SaveItem_CanExecute()
         {
             if (CurrentMeetingItem == null) return false;
-            return true;
+            return CurrentMeetingItemHasChanges;
         }
 
         private void SaveItem_Execute()
@@ -189,12 +216,24 @@ namespace ResolutionActionSystem
             Save();
         }
 
+        public ICommand SelectMeetingCommand { get; set; }
+        private bool SelectMeeting_CanExecute()
+        {
+            return SelectedMeeting != null;
+        }
+
+        private void SelectMeeting_Execute()
+        {
+            CurrentMeeting = SelectedMeeting;
+        }
         #endregion
 
         public void SetItemStatus(MeetingItemStatusLu meetingItemStatusLu)
         {
             if (CurrentMeetingItem == null) return;
-
+            
+            CurrentMeetingItemHasChanges = true;
+            
             CurrentMeetingItem.MeetingItemStatus.MeetingItemStatusLu = meetingItemStatusLu;
             OnPropertyChanged("CurrentMeetingItem");
         }

@@ -21,7 +21,7 @@ namespace ResolutionActionSystem
     /// </summary>
     public partial class EditMeeting : UserControl, IControllable
     {
-        protected EditMeetingController<EditMeeting> Controller { get; set; }
+        protected EditMeetingViewModel<EditMeeting> ViewModel { get; set; }
 
         public EditMeeting()
         {
@@ -33,30 +33,38 @@ namespace ResolutionActionSystem
 
         public void InitController()
         {
-            this.Controller = new EditMeetingController<EditMeeting>(this);
+            this.ViewModel = new EditMeetingViewModel<EditMeeting>(this);
+            this.DataContext = ViewModel;
         }
         
         public Controller GetController()
         {
-            return this.Controller;
+            return this.ViewModel;
         }
 
         private void LoadEvents()
         {
-            Controller.UIEventRaised += UIEventRaised;
+            ViewModel.UIEventRaised += UIEventRaised;
+            ViewModel.InformationEventRaised += ViewModel_InformationEventRaised;
+        }
+
+        void ViewModel_InformationEventRaised(object sender, string infoMessage)
+        {
+            MessageBox.Show(infoMessage, "Information", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void UIEventRaised(object sender, UIEventHandlerArgs args)
         {
             if (args == UIEventHandlerArgs.EditStatus)
             {
-                var editItemStatusWindow = new EditItemStatus(Controller.MeetingUseCase.MeetingItemStatusLus,Controller.CurrentMeetingItem);
-                //editItemStatusWindow.Owner = ((Grid)(((TabControl)((TabItem)this.Parent).Parent)).Parent);
+                var editItemStatusWindow = new EditItemStatus(ViewModel.MeetingUseCase.MeetingItemStatusLus,ViewModel.CurrentMeetingItem);
+                
+                //Get the main window that the calling user control resides in. This allows the popup to be centered in it.
                 editItemStatusWindow.Owner = (((((this.Parent as TabItem).Parent as TabControl).Parent as Grid).Parent as Grid).Parent as ResolutionActionSystem.Menu).Parent as Window;
                 editItemStatusWindow.ShowDialog();
 
                 if (editItemStatusWindow.StatusSubmitted)
-                    Controller.SetItemStatus(editItemStatusWindow.SelectedItemStatusLu);
+                    ViewModel.SetItemStatus(editItemStatusWindow.SelectedItemStatusLu);
             }
         }
     }

@@ -15,33 +15,32 @@ using ResolutionActionSystemLogic.CustomClasses;
 
 namespace ResolutionActionSystem
 {
-    public class CaptureMeetingController<T> :Controller, INotifyPropertyChanged, IGetMeeting, IDataErrorInfo where T: CaptureMeeting
+    public class CaptureMeetingViewModel<T> :Controller, INotifyPropertyChanged, IGetMeeting, IDataErrorInfo where T: CaptureMeeting
     {
         protected MeetingUseCase MeetingUseCase { get; set; }
 
-        
-
-        public CaptureMeetingController(T userControl) 
+        public CaptureMeetingViewModel(T userControl) 
             : base(userControl)
         {
             var meetingUseCase = new MeetingUseCase();
             this.MeetingUseCase = meetingUseCase;
-            this.PrimaryControl.DataContext = this;
             MeetingUseCase.CreateNewMeeting();
-            
-            this.PropertyChanged += CaptureMeetingController_PropertyChanged;
             this.CurrentMeetingDate = DateTime.Today;
             
-            TransferItemCommand = new RelayCommand(TransferItem_Executed,TransferItem_CanExecute);
-            TransferAllItemsCommand = new RelayCommand(TransferAllItems_Execute,TransferAllItems_CanExecute);
-            ReturnItemCommand = new RelayCommand(ReturnItem_Execute,ReturnItem_CanExecute);
-            ReturnAllItemsCommand =new RelayCommand(ReturnAllItems_Execute,ReturnAllItems_CanExecute);
-            CreateMeetingCommand = new RelayCommand(CreateMeeting_Execute,CreateMeeting_CanExecute);
+            SetupEventHandlers();
 
             ScheduledMeetingMinutes = new ObservableCollection<MeetingMinute>();
         }
 
-        
+        private void SetupEventHandlers()
+        {
+            this.PropertyChanged += CaptureMeetingController_PropertyChanged;
+            TransferItemCommand = new RelayCommand(TransferItem_Executed, TransferItem_CanExecute);
+            TransferAllItemsCommand = new RelayCommand(TransferAllItems_Execute, TransferAllItems_CanExecute);
+            ReturnItemCommand = new RelayCommand(ReturnItem_Execute, ReturnItem_CanExecute);
+            ReturnAllItemsCommand = new RelayCommand(ReturnAllItems_Execute, ReturnAllItems_CanExecute);
+            CreateMeetingCommand = new RelayCommand(CreateMeeting_Execute, CreateMeeting_CanExecute);
+        }
 
         void CaptureMeetingController_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
@@ -69,14 +68,11 @@ namespace ResolutionActionSystem
 
                 //Custom Updates
                 MeetingUseCase.UpdateCurrentMeeting_MeetingType(CurrentMeetingType);
-               // if (CurrentMeeting.PreviousMeeting !=null)
-                //{
-                    AvailableMeetingMinutes = PreviousMeetingMinutes;
-                    OnPropertyChanged("PreviousMeetingMinutes");
-                    OnPropertyChanged("AvailableMeetingMinutes");
-                //}
-
-                //------------
+               
+                AvailableMeetingMinutes = PreviousMeetingMinutes;
+                OnPropertyChanged("PreviousMeetingMinutes");
+                OnPropertyChanged("AvailableMeetingMinutes");
+                
             }
         }
 
@@ -109,6 +105,11 @@ namespace ResolutionActionSystem
         }
 
         public List<MeetingType> MeetingTypes { get { return MeetingUseCase.MeetingTypes; } }
+
+        public Meeting GetMeeting()
+        {
+            return CurrentMeeting;
+        }
 
         #region Transfer Methods
         private void RemoveScheduledMeetingMinute(MeetingMinute scheduledMeetingItem)
@@ -237,23 +238,35 @@ namespace ResolutionActionSystem
         public ICommand CreateMeetingCommand { get; set; }
         private bool CreateMeeting_CanExecute()
         {
-            return true;
+            return string.IsNullOrEmpty(Error);
         }
 
         private void CreateMeeting_Execute()
         {
+            CreateMeeting();
+        }
+
+        private void CreateMeeting()
+        {
             MeetingUseCase.LinkMeetingItems(ScheduledMeetingMinutes);
             MeetingUseCase.Save();
             InformationEventRaised(this, "Meeting Created.\r\nYou can now proceed to edit the Meeting further.");
-            UIEventRaised(this,UIEventHandlerArgs.MeetingCreated);
+            UIEventRaised(this, UIEventHandlerArgs.MeetingCreated);
+            Clear();
         }
+
+        private void Clear()
+        {
+            MeetingUseCase.CreateNewMeeting();
+            ScheduledMeetingMinutes = new ObservableCollection<MeetingMinute>();
+            AvailableMeetingMinutes = new ObservableCollection<MeetingMinute>();
+            CurrentMeetingDate = DateTime.Today;
+            OnPropertyChanged("");
+        }
+
         #endregion
 
-        public Meeting GetMeeting()
-        {
-            return CurrentMeeting;
-        }
-
+        #region IDataErrorInfo
         public string this[string name]
         {
             get
@@ -264,6 +277,23 @@ namespace ResolutionActionSystem
                     if (CurrentMeetingType == null)
                     {
                         result = "Meeting Type must not be empty.";
+                        Error = result;
+                    }
+                    else
+                    {
+                        Error = null;
+                    }
+                }
+                if (name == "CurrentMeetingDate")
+                {
+                    if (CurrentMeetingDate.CompareTo(DateTime.Today) < 0)
+                    {
+                        result = "Scheduled Date cannot be before today.";
+                        Error = result;
+                    }
+                    else
+                    {
+                        Error = null;
                     }
                 }
                 return result;
@@ -271,6 +301,7 @@ namespace ResolutionActionSystem
         }
 
         public string Error { get; private set; }
+        #endregion
     }
 
     public interface IGetMeeting

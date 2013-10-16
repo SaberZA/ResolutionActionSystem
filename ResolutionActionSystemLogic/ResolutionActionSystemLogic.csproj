@@ -47,7 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CustomClasses\Common.cs" />
-    <Compile Include="CustomClasses\MeetingMinute.cs" />
+    <Compile Include="MeetingMinute.cs" />
     <Compile Include="Meeting.cs" />
     <Compile Include="MeetingAction.cs" />
     <Compile Include="MeetingItem.cs" />

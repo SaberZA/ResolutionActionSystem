@@ -15,6 +15,7 @@ namespace ResolutionActionSystemLogic.CustomClasses
                                      PersonResponsible.LastName);
             }
         }
+
         public string Status 
         { 
             get
@@ -22,6 +23,7 @@ namespace ResolutionActionSystemLogic.CustomClasses
                 return MeetingItemStatus.MeetingItemStatusLu.MeetingItemStatusDesc;
             }   
         }
+
         public string Comment
         {
             get
@@ -38,6 +40,7 @@ namespace ResolutionActionSystemLogic.CustomClasses
                 return meetingActions;
             }
         }
+
         public string MeetingItemDescription
         {
             get
@@ -82,10 +85,8 @@ namespace ResolutionActionSystemLogic.CustomClasses
 
         public override string ToString()
         {
-            return String.Format("{0}{1,8}{2,15}", this.MeetingItemDescription,  this.Status, this.PersonResponsibleName);
+            return String.Format("{0}", this.MeetingItemDescription);
         }
-
-
 
         public void UpdateMeetingItemStatus(MeetingItemStatusLu meetingItemStatus)
         {

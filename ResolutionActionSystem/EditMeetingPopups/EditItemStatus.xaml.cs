@@ -23,7 +23,7 @@ namespace ResolutionActionSystem.EditMeetingPopups
     {
         protected EditItemStatusViewModel ViewModel { get; set; }
 
-        public EditItemStatus(List<MeetingItemStatusLu> meetingItemStatusLus, MeetingMinute meetingMinute)
+        public EditItemStatus(IEnumerable<MeetingItemStatusLu> meetingItemStatusLus, MeetingMinute meetingMinute)
         {
             InitializeComponent();
             this.ViewModel = new EditItemStatusViewModel(meetingItemStatusLus, meetingMinute);

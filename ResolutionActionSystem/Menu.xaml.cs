@@ -21,7 +21,7 @@ namespace ResolutionActionSystem
     /// </summary>
     public partial class Menu : UserControl, IControllable
     {
-        protected MenuController<Menu> Controller { get; set; }
+        protected MenuViewModel<Menu> ViewModel { get; set; }
         protected EditMeeting EditMeetingUserControl { get; set; }
         protected CaptureMeeting CaptureMeetingUserControl { get; set; }
 
@@ -40,18 +40,18 @@ namespace ResolutionActionSystem
 
         private void LoadEvents()
         {
-            ((CaptureMeetingController<CaptureMeeting>)this.CaptureMeetingUserControl.GetController()).UIEventRaised += UIEventRaised;
+            ((CaptureMeetingViewModel<CaptureMeeting>)this.CaptureMeetingUserControl.GetController()).UIEventRaised += UIEventRaised;
         }
 
         private void UIEventRaised(object sender, UIEventHandlerArgs args)
         {
             if (args == UIEventHandlerArgs.MeetingCreated)
             {
-                Controller.ActiveButtonTag = "1";
-                Controller.ActiveTabIndex = 1;
-                Controller.UpdateActiveTab();
+                ViewModel.ActiveButtonTag = "1";
+                ViewModel.ActiveTabIndex = 1;
+                ViewModel.UpdateActiveTab();
 
-                ISetMeeting meetingSetter = (EditMeetingController<EditMeeting>)EditMeetingUserControl.GetController();
+                ISetMeeting meetingSetter = (EditMeetingViewModel<EditMeeting>)EditMeetingUserControl.GetController();
                 meetingSetter.SetMeeting(((IGetMeeting)this.CaptureMeetingUserControl.GetController()).GetMeeting());
             }
         }
@@ -59,20 +59,20 @@ namespace ResolutionActionSystem
 
         public void InitController()
         {
-            this.Controller = new MenuController<Menu>(this);
+            this.ViewModel = new MenuViewModel<Menu>(this);
         }
 
         public Controller GetController()
         {
-            return this.Controller;
+            return this.ViewModel;
         }
 
         public void RegisterMenuControls()
         {
-            Controller.RegisterButton(btnCaptureNewMeeting);
-            Controller.RegisterButton(btnEditMeeting);
-            Controller.RegisterButton(btnPrintMeetingMinutes);
-            Controller.RegisterButton(btnViewMinutesHistory);
+            ViewModel.RegisterButton(btnCaptureNewMeeting);
+            ViewModel.RegisterButton(btnEditMeeting);
+            ViewModel.RegisterButton(btnPrintMeetingMinutes);
+            ViewModel.RegisterButton(btnViewMinutesHistory);
         }
 
         private void LoadTabUserControls()

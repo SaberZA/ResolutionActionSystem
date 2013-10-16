@@ -75,14 +75,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Controllers\UIEventHandlerArgs.cs" />
-    <Compile Include="MeetingTypeValidation.cs" />
+    <Compile Include="Common\UIEventHandlerArgs.cs" />
     <Compile Include="EditMeetingPopups\EditItemStatus.xaml.cs">
       <DependentUpon>EditItemStatus.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\EditItemStatusViewModel.cs" />
-    <Compile Include="ViewModel\MainViewModel.cs" />
-    <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Page Include="CaptureMeeting.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -106,13 +103,13 @@
     <Compile Include="CaptureMeeting.xaml.cs">
       <DependentUpon>CaptureMeeting.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controllers\CaptureMeetingController.cs" />
-    <Compile Include="Controllers\Controller.cs" />
-    <Compile Include="Controllers\IControllable.cs" />
+    <Compile Include="ViewModel\CaptureMeetingViewModel.cs" />
+    <Compile Include="ViewModel\ViewModel.cs" />
+    <Compile Include="Common\IControllable.cs" />
     <Compile Include="EditMeeting.xaml.cs">
       <DependentUpon>EditMeeting.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controllers\EditMeetingController.cs" />
+    <Compile Include="ViewModel\EditMeetingViewModel.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -123,7 +120,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\MenuController.cs" />
+    <Compile Include="ViewModel\MenuViewModel.cs" />
     <Compile Include="Menu.xaml.cs">
       <DependentUpon>Menu.xaml</DependentUpon>
     </Compile>
@@ -163,9 +160,7 @@
       <Name>ResolutionActionSystemLogic</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Controllers\Validation\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

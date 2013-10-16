@@ -21,13 +21,13 @@ namespace ResolutionActionSystem
     /// </summary>
     public partial class CaptureMeeting : UserControl, IControllable
     {
-        protected CaptureMeetingController<CaptureMeeting> Controller { get; set; }
+        protected CaptureMeetingViewModel<CaptureMeeting> ViewModel { get; set; }
 
         public CaptureMeeting()
         {
             InitializeComponent();
             InitController();
-            this.Controller.InformationEventRaised += Controller_InformationEventRaised;
+            this.ViewModel.InformationEventRaised += Controller_InformationEventRaised;
         }
 
         void Controller_InformationEventRaised(object sender, string infoMessage)
@@ -37,12 +37,13 @@ namespace ResolutionActionSystem
 
         public void InitController()
         {
-            this.Controller = new CaptureMeetingController<CaptureMeeting>(this);
+            this.ViewModel = new CaptureMeetingViewModel<CaptureMeeting>(this);
+            this.DataContext = ViewModel;
         }
 
         public Controller GetController()
         {
-            return this.Controller;
+            return this.ViewModel;
         }
 
         

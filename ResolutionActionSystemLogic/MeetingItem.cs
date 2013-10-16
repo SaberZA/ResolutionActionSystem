@@ -18,9 +18,6 @@ namespace ResolutionActionSystemLogic
 
         public DateTime MeetingItemDueDate { get; set; }
 
-        //[ForeignKey("PersonId")]
-        //public int PersonResponsibleId { get; set; }
-
         public virtual Person PersonResponsible { get; set; }
 
         public virtual ICollection<MeetingItemStatus> MeetingItemStatuses { get; set; }

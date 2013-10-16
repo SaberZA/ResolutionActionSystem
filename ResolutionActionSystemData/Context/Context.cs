@@ -6,10 +6,7 @@ namespace ResolutionActionSystemContext
     public class Context : DbContext
     {
         public Context()
-            : base("ResolutionActionSystem")
-        {
-            
-        }
+            : base("ResolutionActionSystem"){}
 
         public DbSet<MeetingType> MeetingTypes { get; set; }
         public DbSet<Meeting> Meetings { get; set; }

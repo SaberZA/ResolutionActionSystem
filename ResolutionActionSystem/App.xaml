@@ -2,13 +2,13 @@
              xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero">
   <Application.Resources>
 
-        <!--<Grid.Resources>-->
+        
         <Style x:Key="StandardComboBoxStyle" TargetType="{x:Type ComboBox}">
             <Style.Triggers>
                 <Trigger Property="Validation.HasError" Value="True">
                     <Setter Property="ToolTip" 
                                 Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
-                    <Setter Property="BorderThickness" Value="3"></Setter>
+                    <Setter Property="BorderThickness" Value="1"></Setter>
                     <Setter Property="BorderBrush" Value="Red" />
                     
                     
@@ -27,8 +27,33 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <!--</Grid.Resources>-->
-            <Style x:Key="ButtonFocusVisual">
+
+        <Style x:Key="StandardDatePickerStyle" TargetType="{x:Type DatePicker}">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="ToolTip" 
+                                Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                    <Setter Property="BorderThickness" Value="1"></Setter>
+                    <Setter Property="BorderBrush" Value="Red" />
+
+
+                </Trigger>
+            </Style.Triggers>
+
+            <!--<Setter Property="Validation.ErrorTemplate">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <DockPanel Dock="Right">
+                            <AdornedElementPlaceholder>
+                                <Border BorderBrush="Red" BorderThickness="2"></Border>
+                            </AdornedElementPlaceholder>
+                        </DockPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>-->
+        </Style>
+
+        <Style x:Key="ButtonFocusVisual">
                 <Setter Property="Control.Template">
                     <Setter.Value>
                         <ControlTemplate>

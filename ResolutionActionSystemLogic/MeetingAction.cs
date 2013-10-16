@@ -16,12 +16,6 @@ namespace ResolutionActionSystemLogic
         [Required]
         public string ActionDescription { get; set; }
 
-        //[ForeignKey("PersonId"), Required]
-        //public int PersonResponsibleId { get; set; }
-
-        //[ForeignKey("MeetingItemStatusId"), Required]
-        //public int MeetingItemStatusId { get; set; }
-
         public virtual MeetingItemStatus MeetingItemStatus { get; set; }
 
         public virtual Person PersonResponsible { get; set; }

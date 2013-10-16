@@ -12,14 +12,17 @@
                   ItemsSource="{Binding Path=Meetings}"
                   DisplayMemberPath="MeetingCodeAndType"
                   SelectedValuePath="MeetingId"
-                  SelectedItem="{Binding Path=CurrentMeeting}"
+                  SelectedItem="{Binding Path=SelectedMeeting}"
                   />
-        <Button Content="Select" Height="23" HorizontalAlignment="Right" Margin="0,11,176,0" Name="btnSelect" VerticalAlignment="Top" Width="110" />
+        <Button Content="Select" Height="23" HorizontalAlignment="Right" Margin="0,11,176,0" Name="btnSelect" VerticalAlignment="Top" Width="110" 
+                Command="{Binding Path=SelectMeetingCommand}"
+                />
         <Separator Height="14" HorizontalAlignment="Left" Margin="0,48,0,0" Name="separator1" VerticalAlignment="Top" Width="730" />
         <Label Content="Meeting Items: " Height="28" HorizontalAlignment="Left" Margin="6,103,0,0" Name="lblMeetingItemsHeader" VerticalAlignment="Top" Width="91" />
         <ListBox Height="267" HorizontalAlignment="Left" Margin="6,128,0,0" Name="lstMeetingItems" VerticalAlignment="Top" Width="226" 
                 ItemsSource="{Binding Path=ScheduledMeetingMinutes}"
                 SelectedItem="{Binding Path=CurrentMeetingItem}" 
+                
                  />
         <Label Content="Meeting Item Name: " Height="28" HorizontalAlignment="Left" Margin="266,137,0,0" Name="label3" VerticalAlignment="Top" Width="124" />
         <Label Content="Meeting Item Status: " Height="28" HorizontalAlignment="Left" Margin="266,171,0,0" Name="label4" VerticalAlignment="Top" Width="124" />
@@ -48,11 +51,11 @@
                  />
         <Separator Height="14" HorizontalAlignment="Left" Margin="0,397,0,0" Name="separator2" VerticalAlignment="Top" Width="730" />
         <Label Content="Meeting Item Options: " FontSize="14" Height="28" HorizontalAlignment="Left" Margin="6,418,0,0" Name="label8" VerticalAlignment="Top" Width="155" />
-        <Button Height="54" HorizontalAlignment="Left" Margin="8,471,0,0" Name="btnAddMeetingItem" VerticalAlignment="Top" Width="164">
+        <Button Height="54" HorizontalAlignment="Left" Margin="8,471,0,0" Name="btnAddMeetingItem" VerticalAlignment="Top" Width="164" IsEnabled="False">
             <TextBlock>Add Meeting Item</TextBlock>
         </Button>
-        <Button Content="Update Meeting Item Actions" Height="54" HorizontalAlignment="Left" Margin="538,471,0,0" Name="btnUpdateMeetingItemActions" VerticalAlignment="Top" Width="181" />
-        <Button Content="Update Meeting Item Due Date" Height="54" HorizontalAlignment="Left" Margin="348,471,0,0" Name="btnUpdateMeetingItemDueDate" VerticalAlignment="Top" Width="186" />
+        <Button Content="Update Meeting Item Actions" Height="54" HorizontalAlignment="Left" Margin="538,471,0,0" Name="btnUpdateMeetingItemActions" VerticalAlignment="Top" Width="181" IsEnabled="False" />
+        <Button Content="Update Meeting Item Due Date" Height="54" HorizontalAlignment="Left" Margin="348,471,0,0" Name="btnUpdateMeetingItemDueDate" VerticalAlignment="Top" Width="186" IsEnabled="False" />
         <Button Height="54" HorizontalAlignment="Left" Margin="178,471,0,0" Name="btnUpdateMeetingItemStatus" VerticalAlignment="Top" Width="164"
                 Command="{Binding Path=EditItemStatusCommand}">
             <TextBlock TextAlignment="Center">Update Meeting Item<LineBreak />Status</TextBlock>
