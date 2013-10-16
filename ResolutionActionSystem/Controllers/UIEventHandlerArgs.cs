@@ -2,6 +2,8 @@
 {
     public enum UIEventHandlerArgs
     {
-        MeetingCreated
+        MeetingCreated,
+        EditStatus,
+        StatusSubmitted
     }
 }

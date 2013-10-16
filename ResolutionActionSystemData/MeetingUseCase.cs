@@ -21,6 +21,7 @@ namespace ResolutionActionSystemContext
         {
             MeetingTypes = Context.MeetingTypes.ToList();
             Meetings = Context.Meetings.ToList();
+            MeetingItemStatusLus = Context.MeetingItemStatusLus.ToList();
         }
 
         public MeetingUseCase()
@@ -47,6 +48,7 @@ namespace ResolutionActionSystemContext
         #region Lookups
         public List<MeetingType> MeetingTypes { get; set; }
         public List<Meeting> Meetings { get; set; }
+        public List<MeetingItemStatusLu> MeetingItemStatusLus { get; set; }
         #endregion
 
         

@@ -5,6 +5,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Windows.Controls;
+using System.Windows.Input;
+using GalaSoft.MvvmLight.Command;
 using ResolutionActionSystemContext;
 using ResolutionActionSystemData.Annotations;
 using ResolutionActionSystemLogic;
@@ -12,7 +14,7 @@ using ResolutionActionSystemLogic.CustomClasses;
 
 namespace ResolutionActionSystem
 {
-    public class EditMeetingController<T> : Controller, INotifyPropertyChanged, ISetMeeting where T: EditMeeting
+    public class EditMeetingController<T> : Controller, INotifyPropertyChanged, ISetMeeting, ISetStatus where T: EditMeeting
     {
         public MeetingUseCase MeetingUseCase { get; set; }
 
@@ -20,6 +22,8 @@ namespace ResolutionActionSystem
             : base(userControl)
         {
             InitModel();
+
+            EditItemStatus = new RelayCommand(EditItemStatus_Execute, EditItemStatus_CanExecute);
         }
 
         private void InitModel()
@@ -76,18 +80,8 @@ namespace ResolutionActionSystem
             {
                 return CurrentMeetingItem == null 
                     ? new ObservableCollection<MeetingAction>() 
-                    : ToObservableCollection(CurrentMeetingItem.MeetingItemStatus.MeetingActions);
+                    : Common.ToObservableCollection(CurrentMeetingItem.MeetingItemStatus.MeetingActions);
             }
-        }
-
-        private ObservableCollection<K> ToObservableCollection<K>(IEnumerable<K> inputItems)
-        {
-            var items = new ObservableCollection<K>();
-            foreach (K item in inputItems)
-            {
-                items.Add(item);
-            }
-            return items;
         }
 
         public ObservableCollection<MeetingMinute> ScheduledMeetingMinutes { get; set; }
@@ -112,6 +106,8 @@ namespace ResolutionActionSystem
             CurrentMeeting = Meetings.FirstOrDefault(p => p.MeetingId == meeting.MeetingId);
         }
 
+
+
         #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -122,6 +118,43 @@ namespace ResolutionActionSystem
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
+
+        #region Events
+        public event UIEventHandler UIEventRaised;
+        public delegate void UIEventHandler(object sender, UIEventHandlerArgs args);
+
+        private void OnUIEventRaised(UIEventHandlerArgs args)
+        {
+            var handler = UIEventRaised;
+            if (handler != null) handler(this, args);
+        }
+        #endregion
+
+        #region ICommands
+        public ICommand EditItemStatus { get; set; }
+        private void EditItemStatus_Execute()
+        {
+            OnUIEventRaised(UIEventHandlerArgs.EditStatus);
+        }
+
+        private bool EditItemStatus_CanExecute()
+        {
+            return CurrentMeetingItem != null;
+        }
+        #endregion
+
+        public void SetItemStatus(MeetingItemStatusLu meetingItemStatusLu)
+        {
+            if (CurrentMeetingItem == null) return;
+
+            CurrentMeetingItem.MeetingItemStatus.MeetingItemStatusLu = meetingItemStatusLu;
+            OnPropertyChanged("CurrentMeetingItem");
+        }
+    }
+
+    public interface ISetStatus
+    {
+        void SetItemStatus(MeetingItemStatusLu meetingItemStatusLu);
     }
 
     public interface ISetMeeting

@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ResolutionActionSystem.Controllers;
+using ResolutionActionSystem.EditMeetingPopups;
 
 namespace ResolutionActionSystem
 {
@@ -26,6 +27,8 @@ namespace ResolutionActionSystem
         {
             InitializeComponent();
             InitController();
+
+            LoadEvents();
         }
 
         public void InitController()
@@ -38,5 +41,23 @@ namespace ResolutionActionSystem
             return this.Controller;
         }
 
+        private void LoadEvents()
+        {
+            Controller.UIEventRaised += UIEventRaised;
+        }
+
+        private void UIEventRaised(object sender, UIEventHandlerArgs args)
+        {
+            if (args == UIEventHandlerArgs.EditStatus)
+            {
+                var editItemStatusWindow = new EditItemStatus(Controller.MeetingUseCase.MeetingItemStatusLus,Controller.CurrentMeetingItem);
+                //editItemStatusWindow.Owner = ((Grid)(((TabControl)((TabItem)this.Parent).Parent)).Parent);
+                editItemStatusWindow.Owner = (((((this.Parent as TabItem).Parent as TabControl).Parent as Grid).Parent as Grid).Parent as ResolutionActionSystem.Menu).Parent as Window;
+                editItemStatusWindow.ShowDialog();
+
+                if (editItemStatusWindow.StatusSubmitted)
+                    Controller.SetItemStatus(editItemStatusWindow.SelectedItemStatusLu);
+            }
+        }
     }
 }

@@ -53,7 +53,8 @@
         </Button>
         <Button Content="Update Meeting Item Actions" Height="54" HorizontalAlignment="Left" Margin="538,471,0,0" Name="btnUpdateMeetingItemActions" VerticalAlignment="Top" Width="181" />
         <Button Content="Update Meeting Item Due Date" Height="54" HorizontalAlignment="Left" Margin="348,471,0,0" Name="btnUpdateMeetingItemDueDate" VerticalAlignment="Top" Width="186" />
-        <Button Height="54" HorizontalAlignment="Left" Margin="178,471,0,0" Name="btnUpdateMeetingItemStatus" VerticalAlignment="Top" Width="164">
+        <Button Height="54" HorizontalAlignment="Left" Margin="178,471,0,0" Name="btnUpdateMeetingItemStatus" VerticalAlignment="Top" Width="164"
+                Command="{Binding Path=EditItemStatus}">
             <TextBlock TextAlignment="Center">Update Meeting Item<LineBreak />Status</TextBlock>
         </Button>
         <Label Background="#00000000"  FontSize="25" Height="48" Margin="218,53,51,457" Name="lblCurrentMeeting" Padding="5" 
