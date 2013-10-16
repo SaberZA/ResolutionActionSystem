@@ -25,7 +25,7 @@ namespace ResolutionActionSystemTest
             db.MeetingTypes.Add(mancoMeetingType);
 
             // Validate Test --------------------
-            var hasMancoMeetingType = db.MeetingTypes.Count(p => p.MeetingTypeName.ToUpper() == "MANCO") > 0;
+            var hasMancoMeetingType = db.MeetingTypes.Local.Count(p => p.MeetingTypeName.ToUpper() == "MANCO") > 0;
 
             // Assert --------------------
             Assert.IsTrue(hasMancoMeetingType);
@@ -37,57 +37,42 @@ namespace ResolutionActionSystemTest
             // Setup --------------------
             var db = new Context();
             var uc = new MeetingUseCase(db);
-            var mancoMeetingType = db.MeetingTypes.FirstOrDefault(p => p.MeetingTypeName.ToUpper() == "MANCO");
+            var mancoMeetingType = CreateMancoMeetingType();
 
             // Run Test --------------------
-            uc.CreateNewMeeting();
-            var meeting = uc.Current;
-            meeting.MeetingNumber = 1;
-            meeting.MeetingDate = DateTime.Now;
-            meeting.MeetingType = mancoMeetingType;
-            db.Meetings.Add(meeting);
+            CreateMeeting(uc, mancoMeetingType, db);
 
             // Validate Test --------------------
-            var hasMeeting = db.Meetings.Count(p => p.MeetingNumber == 1) > 0;
+            var hasMeeting = db.Meetings.Local.Count(p => p.MeetingNumber == 1) > 0;
 
             // Assert --------------------
             Assert.IsTrue(hasMeeting);
-        } 
+        }
+
+        private static void CreateMeeting(MeetingUseCase uc, MeetingType mancoMeetingType, Context db)
+        {
+            uc.CreateNewMeeting();
+            var meeting = CreateMeeting(uc, mancoMeetingType);
+            db.Meetings.Add(meeting);
+        }
 
         [TestMethod]
         public void ConstructMeetingItemStatus_GivenStatus_ShouldReturnTrue()
         {
             // Setup --------------------
             var db = new Context();
-            var meeting = db.Meetings.FirstOrDefault();
-            var meetingItem = db.MeetingItems.FirstOrDefault();
+            var uc = new MeetingUseCase(db);
+            var mancoMeetingType = CreateMancoMeetingType();
+            CreateMeeting(uc, mancoMeetingType, db);
+            var meeting = uc.Current;
+            var meetingItem = CreateMeetingItem();
 
             // Run Test --------------------
-            var meetingItemStatus = new MeetingItemStatus();
-
-            var meetingItemStatusLu = new MeetingItemStatusLu();
-            meetingItemStatusLu.MeetingItemStatusDesc = "CREATED";
-            db.MeetingItemStatusLus.Add(meetingItemStatusLu);
-
-            meetingItemStatus.MeetingItemStatusLu = meetingItemStatusLu;
-            meetingItemStatus.MeetingItemStatusDate = DateTime.Now;
-            meetingItemStatus.Meeting = meeting;
-            meetingItemStatus.MeetingItem = meetingItem;
-
-            meetingItem.MeetingItemStatuses.Add(meetingItemStatus);
-            meeting.MeetingItemStatuses.Add(meetingItemStatus);
-                
-            var meetingItemStatusTest =
-                db.MeetingItemStatuses.FirstOrDefault(
-                    p =>
-                    p.Meeting.MeetingId == meeting.MeetingId &&
-                    p.MeetingItem.MeetingItemId == meetingItem.MeetingItemId);
-            
-            meetingItemStatusTest.MeetingItemStatusLu =
-                db.MeetingItemStatusLus.FirstOrDefault(p => p.MeetingItemStatusDesc == "CREATED");
+            MeetingItemStatus meetingItemStatus;
+            CreateMeetingItemStatus(meeting, meetingItem, db, out meetingItemStatus);
 
             // Validate Test --------------------
-            var meetingItemStatusOfCreated = db.MeetingItemStatuses.FirstOrDefault(p => p.Meeting.MeetingId == meeting.MeetingId && p.MeetingItem.MeetingItemId == meetingItem.MeetingItemId);
+            var meetingItemStatusOfCreated = db.MeetingItemStatuses.Local.FirstOrDefault(p => p.Meeting.MeetingId == meeting.MeetingId && p.MeetingItem.MeetingItemId == meetingItem.MeetingItemId);
 
             bool hasMeetingItemStatusOfCreated = meetingItemStatusOfCreated != null;
 
@@ -95,14 +80,31 @@ namespace ResolutionActionSystemTest
             Assert.IsTrue(hasMeetingItemStatusOfCreated);
         }
 
+        private static void CreateMeetingItemStatus(Meeting meeting, MeetingItem meetingItem, Context db,
+                                                    out MeetingItemStatus meetingItemStatus)
+        {
+            meetingItemStatus = new MeetingItemStatus();
+            var meetingItemStatusLu = CreateMeetingItemStatusLu();
+
+            meetingItemStatus.MeetingItemStatusLu = meetingItemStatusLu;
+            meetingItemStatus.MeetingItemStatusDate = DateTime.Now;
+            meetingItemStatus.Meeting = meeting;
+            meetingItemStatus.MeetingItem = meetingItem;
+
+            db.MeetingItemStatusLus.Add(meetingItemStatusLu);
+            db.MeetingItemStatuses.Add(meetingItemStatus);
+        }
+
         [TestMethod]
         public void AddMeetingItem_GivenMeeting_ShouldReturnMeeting_MeetingStatuses_MeetingItems()
         {
             // Setup --------------------
             var db = new Context();
-            var meeting = db.Meetings.FirstOrDefault(p => p.MeetingNumber == 1);
-            var person = db.Persons.FirstOrDefault();
-            var uc = new MeetingUseCase(db) {Current = meeting};
+            var uc = new MeetingUseCase(db);
+            var mancoMeetingType = CreateMancoMeetingType();
+            CreateMeeting(uc, mancoMeetingType, db);
+            var meeting = uc.Current;
+            var person = new Person("Bob", "Smith");
 
             // Run Test --------------------
             uc.AddNewMeetingItem("EFv2", DateTime.Now,person);
@@ -116,27 +118,7 @@ namespace ResolutionActionSystemTest
             Assert.IsTrue(meetingItemExists);
         }
 
-        [TestMethod]
-        public void PreviousMeeting_GivenMeeting_ShouldReturnPreviousMeetingProperties()
-        {
-            // Setup --------------------
-            var uc = new MeetingUseCase();
-
-            // Run Test --------------------
-            uc.CreateNewMeeting();
-            var meetingType = uc.MeetingTypes.FirstOrDefault(p => p.MeetingTypeName == "MANCO");
-            meetingType = new MeetingType();
-            meetingType.MeetingTypeName = "MANCO";
-            uc.AddNewMeetingType(meetingType);
-            uc.UpdateCurrentMeeting_MeetingType(meetingType);
-            uc.UpdateCurrentMeeting_MeetingDate(DateTime.Today.AddDays(5));
-
-            // Validate Test --------------------
-            var hasPreviousMeeting = (uc.Current.MeetingNumber == (uc.Current.PreviousMeeting.MeetingNumber + 1));
-
-            // Assert --------------------
-            Assert.IsTrue(hasPreviousMeeting);
-        }
+        
 
         [TestMethod]
         public void PrintMeetingMinutes_GivenMeetingId1_ShouldReturnMinutes()
@@ -144,8 +126,13 @@ namespace ResolutionActionSystemTest
             // Setup --------------------
             var db = new Context();
             var uc = new MeetingUseCase(db);
-            int meetingId = db.Meetings.FirstOrDefault().MeetingId;
-            uc.Current = uc.GetMeetingById(meetingId);
+            var mancoMeetingType = CreateMancoMeetingType();
+            CreateMeeting(uc, mancoMeetingType, db);
+            var meeting = uc.Current;
+            var meetingItem = CreateMeetingItem();
+
+            MeetingItemStatus meetingItemStatus;
+            CreateMeetingItemStatus(meeting, meetingItem, db, out meetingItemStatus);
 
             // Run Test --------------------
             List<MeetingMinute> meetingMinutes = uc.GetCurrentMeetingMinutes();
@@ -165,19 +152,23 @@ namespace ResolutionActionSystemTest
         public void UpdateCurrentMeetingItemPerson_GivenMeetingAndMeetingItem_ShouldReturnUpdatedItemName()
         {
             // Setup --------------------
-            var db= new Context();
+            var db = new Context();
             var uc = new MeetingUseCase(db);
-            uc.Current = db.Meetings.FirstOrDefault();
-            var meetingItemStatus = db.MeetingItemStatuses.FirstOrDefault();
+            var mancoMeetingType = CreateMancoMeetingType();
+            CreateMeeting(uc, mancoMeetingType, db);
+            var meeting = uc.Current;
+            var meetingItem = CreateMeetingItem();
+
+            MeetingItemStatus meetingItemStatus;
+            CreateMeetingItemStatus(meeting, meetingItem, db, out meetingItemStatus);
+
             if (meetingItemStatus == null) Assert.Fail("No Meeting Item available");
             int meetingItemStatusId = meetingItemStatus.MeetingItemStatusId;
             uc.CurrentMeetingItem = uc.GetMeetingMinute(meetingItemStatusId);
 
             // Run Test --------------------
-            var personResponsible = new Person();
-            personResponsible.FirstName = "Bob";
-            personResponsible.LastName = "Smith";
-            uc.AddPerson(personResponsible);
+            var personResponsible = new Person("Bob","Smith");
+            //uc.AddPerson(personResponsible);
             uc.UpdateCurrentMeetingItem_PersonResponsible(personResponsible);
 
             // Validate Test --------------------
@@ -194,11 +185,21 @@ namespace ResolutionActionSystemTest
             // Setup --------------------
             var db = new Context();
             var uc = new MeetingUseCase(db);
-            uc.Current = db.Meetings.FirstOrDefault();
-            int meetingItemStatusId = db.MeetingItemStatuses.FirstOrDefault().MeetingItemStatusId;
-            uc.CurrentMeetingItem = uc.GetMeetingMinute(meetingItemStatusId);
-            var meetingItemStatusLu =
-                db.MeetingItemStatusLus.FirstOrDefault(p => p.MeetingItemStatusDesc == "WIP");
+            var mancoMeetingType = CreateMancoMeetingType();
+            CreateMeeting(uc, mancoMeetingType, db);
+            var meeting = uc.Current;
+            var meetingItem = CreateMeetingItem();
+
+            MeetingItemStatus meetingItemStatus;
+            CreateMeetingItemStatus(meeting, meetingItem, db, out meetingItemStatus);
+
+            var meetingItemStatusLu = new MeetingItemStatusLu();
+            meetingItemStatusLu.MeetingItemStatusDesc = "WIP";
+            db.MeetingItemStatusLus.Add(meetingItemStatusLu);
+
+            int meetingItemStatusId = meetingItemStatus.MeetingItemStatusId;
+            uc.CurrentMeetingItem = new MeetingMinute(meetingItemStatus);
+            
 
             // Run Test --------------------
             uc.UpdateCurrentMeetingItem_Status(meetingItemStatusLu);
@@ -219,13 +220,12 @@ namespace ResolutionActionSystemTest
             var meetingItem = new MeetingItem();
             meetingItem.MeetingItemDesc = "Learn WPF";
             meetingItem.MeetingItemDueDate = DateTime.Now.AddDays(2);
-            meetingItem.PersonResponsible = db.Persons.FirstOrDefault();
 
             // Run Test --------------------
             db.MeetingItems.Add(meetingItem);
 
             // Validate Test --------------------
-            var hasMeetingItemWPF = db.MeetingItems.Count(p => p.MeetingItemDesc.ToUpper() == "Learn WPF".ToUpper()) > 0;
+            var hasMeetingItemWPF = db.MeetingItems.Local.Count(p => p.MeetingItemDesc.ToUpper() == "Learn WPF".ToUpper()) > 0;
 
             // Assert --------------------
             Assert.IsTrue(hasMeetingItemWPF);
@@ -236,8 +236,14 @@ namespace ResolutionActionSystemTest
         {
             // Setup --------------------
             var db = new Context();
-            var meetingItemStatus =
-                db.MeetingItemStatuses.FirstOrDefault();
+            var uc = new MeetingUseCase(db);
+            var mancoMeetingType = CreateMancoMeetingType();
+            CreateMeeting(uc, mancoMeetingType, db);
+            var meeting = uc.Current;
+            var meetingItem = CreateMeetingItem();
+
+            MeetingItemStatus meetingItemStatus;
+            CreateMeetingItemStatus(meeting, meetingItem, db, out meetingItemStatus);
 
             // Run Test --------------------
             var meetingAction = new MeetingAction();
@@ -280,7 +286,7 @@ namespace ResolutionActionSystemTest
             db.MeetingItemStatusLus.Add(meetingStatusLu);
 
             // Validate Test --------------------
-            var hasMeetingItemStatusLuWIP = db.MeetingItemStatusLus.Count(p => p.MeetingItemStatusDesc.ToUpper() == "CREATED".ToUpper()) > 0;
+            var hasMeetingItemStatusLuWIP = db.MeetingItemStatusLus.Local.Count(p => p.MeetingItemStatusDesc.ToUpper() == "CREATED".ToUpper()) > 0;
 
             // Assert --------------------
             Assert.IsTrue(hasMeetingItemStatusLuWIP);
@@ -293,14 +299,12 @@ namespace ResolutionActionSystemTest
             var db = new Context();
 
             // Run Test --------------------
-            var person = new Person();
-            person.FirstName = "Steven";
-            person.LastName = "van der Merwe";
+            var person = new Person("Steven","van der Merwe");
             db.Persons.Add(person);
 
             // Validate Test --------------------
             var hasPersonStevenVanderMerwe =
-                db.Persons.Any(p => p.FirstName == "Steven" && p.LastName == "van der Merwe");
+                db.Persons.Local.Any(p => p.FirstName == "Steven" && p.LastName == "van der Merwe");
 
             // Assert --------------------
             Assert.IsTrue(hasPersonStevenVanderMerwe);
@@ -322,13 +326,22 @@ namespace ResolutionActionSystemTest
             db.MeetingItems.Add(meetingItem);
 
             // Validate Test --------------------
-            var hasMeetingItem = db.MeetingItems.Count(p => p.MeetingItemDesc.ToUpper() == "LEARN EF") > 0;
+            var hasMeetingItem = db.MeetingItems.Local.Count(p => p.MeetingItemDesc.ToUpper() == "LEARN EF") > 0;
 
             // Assert --------------------
             Assert.IsTrue(hasMeetingItem);
         }
         #endregion
 
+        #region Helper Methods
+        private static Meeting CreateMeeting(MeetingUseCase uc, MeetingType mancoMeetingType)
+        {
+            var meeting = uc.Current;
+            meeting.MeetingNumber = 1;
+            meeting.MeetingDate = DateTime.Now;
+            meeting.MeetingType = mancoMeetingType;
+            return meeting;
+        }
 
         private static MeetingType CreateMancoMeetingType()
         {
@@ -337,5 +350,23 @@ namespace ResolutionActionSystemTest
             mancoMeetingType.MeetingTypeName = "MANCO";
             return mancoMeetingType;
         }
+
+        private static MeetingItemStatusLu CreateMeetingItemStatusLu()
+        {
+            var meetingItemStatusLu = new MeetingItemStatusLu();
+            meetingItemStatusLu.MeetingItemStatusDesc = "CREATED";
+            return meetingItemStatusLu;
+        }
+
+        private static MeetingItem CreateMeetingItem()
+        {
+            var meetingItem = new MeetingItem();
+            meetingItem.MeetingItemDesc = "Learn WPF";
+            meetingItem.MeetingItemDueDate = DateTime.Now;
+            meetingItem.PersonResponsible = new Person("Bob", "Smith");
+            return meetingItem;
+        }
+
+        #endregion
     }
 }

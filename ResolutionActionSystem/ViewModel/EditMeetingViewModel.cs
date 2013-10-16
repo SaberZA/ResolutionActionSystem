@@ -234,7 +234,7 @@ namespace ResolutionActionSystem
             
             CurrentMeetingItemHasChanges = true;
             
-            CurrentMeetingItem.MeetingItemStatus.MeetingItemStatusLu = meetingItemStatusLu;
+            CurrentMeetingItem.UpdateMeetingItemStatus(meetingItemStatusLu);
             OnPropertyChanged("CurrentMeetingItem");
         }
     }

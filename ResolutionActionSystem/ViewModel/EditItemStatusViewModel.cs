@@ -25,17 +25,9 @@ namespace ResolutionActionSystem.ViewModel
             SubmitItemStatus = new RelayCommand(SubmitItemStatus_Execute,SubmitItemStatus_CanExecute);
         }
 
-        private void SubmitItemStatus_Execute()
-        {
-            OnUIEventRaised(UIEventHandlerArgs.StatusSubmitted);
-        }
+       
 
-        private bool SubmitItemStatus_CanExecute()
-        {
-            return SelectedMeetingItemStatusLu != null;
-        }
-
-        public ICommand SubmitItemStatus { get; set; }
+        
 
         public ObservableCollection<MeetingItemStatusLu> MeetingItemStatusLus { get; set; }
 
@@ -80,6 +72,19 @@ namespace ResolutionActionSystem.ViewModel
         {
             var handler = PropertyChanged;
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+        }
+        #endregion
+
+        #region ICommand
+        public ICommand SubmitItemStatus { get; set; }
+        private void SubmitItemStatus_Execute()
+        {
+            OnUIEventRaised(UIEventHandlerArgs.StatusSubmitted);
+        }
+
+        private bool SubmitItemStatus_CanExecute()
+        {
+            return SelectedMeetingItemStatusLu != null;
         }
         #endregion
 
