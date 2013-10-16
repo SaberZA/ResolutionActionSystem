@@ -260,11 +260,11 @@ namespace ResolutionActionSystemTest
                 db.MeetingItemStatuses.FirstOrDefault();
 
             var meetingAction = new MeetingAction();
-            meetingAction.ActionDescription = "Learn TDD";
+            meetingAction.ActionDescription = "Learn TDD2";
             meetingAction.MeetingItemStatus = meetingItemStatus;
             db.MeetingActions.Add(meetingAction);
 
-            if (!db.MeetingActions.Any(p => p.ActionDescription.ToUpper() == "Learn TDD".ToUpper()))
+            if (!db.MeetingActions.Any(p => p.ActionDescription.ToUpper() == "Learn TDD2".ToUpper()))
             {
                 db.MeetingActions.Add(meetingAction);
                 db.SaveChanges();
@@ -274,7 +274,7 @@ namespace ResolutionActionSystemTest
                 db.MeetingItemStatuses.FirstOrDefault();
 
             var hasMeetingAction =
-                meetingItemStatus.MeetingActions.Count(p => p.ActionDescription.ToUpper() == "Learn TDD".ToUpper()) > 0;
+                meetingItemStatus.MeetingActions.Count(p => p.ActionDescription.ToUpper() == "Learn TDD2".ToUpper()) > 0;
 
             Assert.IsTrue(hasMeetingAction);
         }

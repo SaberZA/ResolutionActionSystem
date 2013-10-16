@@ -38,7 +38,7 @@
                     SelectedDate="{Binding Path=CurrentMeetingItem.MeetingItemDueDate, Mode=OneWay}"
                     />
         <ListBox Height="110" HorizontalAlignment="Left" Margin="372,277,0,0" Name="lstMeetingActions" VerticalAlignment="Top" Width="315" 
-                 ItemsSource="{Binding Path=CurrentMeetingItem.MeetingActions}"
+                 ItemsSource="{Binding Path=MeetingActions}"
                  DisplayMemberPath="{Binding Path=ActionDescription}"
                  IsEnabled="False"
                  />

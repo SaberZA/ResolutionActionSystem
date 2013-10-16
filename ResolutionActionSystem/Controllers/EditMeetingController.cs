@@ -40,9 +40,7 @@ namespace ResolutionActionSystem
                 return meetings;
             }
         }
-
-        //public Meeting CurrentMeeting { get; set; }
-
+        
         private Meeting _currentMeeting;
         private MeetingMinute _currentMeetingItem;
 
@@ -68,7 +66,28 @@ namespace ResolutionActionSystem
                 if (Equals(value, _currentMeetingItem)) return;
                 _currentMeetingItem = value;
                 OnPropertyChanged("CurrentMeetingItem");
+                OnPropertyChanged("MeetingActions");
             }
+        }
+
+        public ObservableCollection<MeetingAction> MeetingActions
+        {
+            get
+            {
+                return CurrentMeetingItem == null 
+                    ? new ObservableCollection<MeetingAction>() 
+                    : ToObservableCollection(CurrentMeetingItem.MeetingItemStatus.MeetingActions);
+            }
+        }
+
+        private ObservableCollection<K> ToObservableCollection<K>(IEnumerable<K> inputItems)
+        {
+            var items = new ObservableCollection<K>();
+            foreach (K item in inputItems)
+            {
+                items.Add(item);
+            }
+            return items;
         }
 
         public ObservableCollection<MeetingMinute> ScheduledMeetingMinutes { get; set; }
@@ -90,8 +109,7 @@ namespace ResolutionActionSystem
         public void SetMeeting(Meeting meeting)
         {
             InitModel();
-            //this.MeetingUseCase.Current = meeting;
-            CurrentMeeting = meeting;
+            CurrentMeeting = Meetings.FirstOrDefault(p => p.MeetingId == meeting.MeetingId);
         }
 
         #region INotifyPropertyChanged

@@ -23,5 +23,10 @@ namespace ResolutionActionSystemLogic
         //public int MeetingItemInstanceId { get; set; }
 
         public virtual MeetingItemStatus MeetingItemStatus { get; set; }
+
+        public override string ToString()
+        {
+            return ActionDescription;
+        }
     }
 }

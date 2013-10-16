@@ -82,8 +82,10 @@ namespace ResolutionActionSystemLogic.CustomClasses
 
         public override string ToString()
         {
-            return String.Format("{0}{1,15}{2,8}{3,15}", this.MeetingItemDescription, this.Comment, this.Status, this.PersonResponsibleName);
+            return String.Format("{0}{1,8}{2,15}", this.MeetingItemDescription,  this.Status, this.PersonResponsibleName);
         }
+
+
 
         public void UpdateMeetingItemStatus(MeetingItemStatusLu meetingItemStatus)
         {
