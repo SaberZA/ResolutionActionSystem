@@ -23,8 +23,13 @@ namespace ResolutionActionSystem
         {
             InitModel();
 
-            EditItemStatus = new RelayCommand(EditItemStatus_Execute, EditItemStatus_CanExecute);
+            EditItemStatusCommand = new RelayCommand(EditItemStatus_Execute, EditItemStatus_CanExecute);
+            SaveItemCommand = new RelayCommand(SaveItem_Execute, SaveItem_CanExecute);
+            CancelItemCommand = new RelayCommand(CancelItem_Execute, CancelItem_CanExecute);
         }
+
+        
+        
 
         private void InitModel()
         {
@@ -53,7 +58,8 @@ namespace ResolutionActionSystem
             get { return _currentMeeting; }
             set
             {
-                if (_currentMeeting == value) return;
+                if (_currentMeeting == value && !MeetingIsNew) return;
+                MeetingIsNew = false;
                 _currentMeeting = value;
                 this.MeetingUseCase.Current = value;
                 ScheduledMeetingMinutes = OriginalMeetingMinutes;
@@ -62,6 +68,9 @@ namespace ResolutionActionSystem
                 OnPropertyChanged("");
             }
         }
+
+        private bool MeetingIsNew { get; set; }
+
         public MeetingMinute CurrentMeetingItem
         {
             get { return _currentMeetingItem; }
@@ -99,14 +108,28 @@ namespace ResolutionActionSystem
             }
         }
 
-
         public void SetMeeting(Meeting meeting)
         {
             InitModel();
             CurrentMeeting = Meetings.FirstOrDefault(p => p.MeetingId == meeting.MeetingId);
         }
 
+        private void Save()
+        {
+            MeetingUseCase.Current = CurrentMeeting;
+            MeetingUseCase.Save();
+            MeetingIsNew = true;
+            CurrentMeeting = MeetingUseCase.Current;
+            OnPropertyChanged("");
+        }
 
+        private void Cancel()
+        {
+            MeetingUseCase.Cancel();
+            MeetingIsNew = true;
+            CurrentMeeting = MeetingUseCase.Current;
+            OnPropertyChanged("");
+        }
 
         #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
@@ -131,7 +154,7 @@ namespace ResolutionActionSystem
         #endregion
 
         #region ICommands
-        public ICommand EditItemStatus { get; set; }
+        public ICommand EditItemStatusCommand { get; set; }
         private void EditItemStatus_Execute()
         {
             OnUIEventRaised(UIEventHandlerArgs.EditStatus);
@@ -141,6 +164,31 @@ namespace ResolutionActionSystem
         {
             return CurrentMeetingItem != null;
         }
+
+        public ICommand CancelItemCommand { get; set; }
+        private bool CancelItem_CanExecute()
+        {
+            if (CurrentMeetingItem == null) return false;
+            return true;
+        }
+
+        private void CancelItem_Execute()
+        {
+            Cancel();
+        }
+
+        public ICommand SaveItemCommand { get; set; }
+        private bool SaveItem_CanExecute()
+        {
+            if (CurrentMeetingItem == null) return false;
+            return true;
+        }
+
+        private void SaveItem_Execute()
+        {
+            Save();
+        }
+
         #endregion
 
         public void SetItemStatus(MeetingItemStatusLu meetingItemStatusLu)

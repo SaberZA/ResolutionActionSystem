@@ -54,13 +54,17 @@
         <Button Content="Update Meeting Item Actions" Height="54" HorizontalAlignment="Left" Margin="538,471,0,0" Name="btnUpdateMeetingItemActions" VerticalAlignment="Top" Width="181" />
         <Button Content="Update Meeting Item Due Date" Height="54" HorizontalAlignment="Left" Margin="348,471,0,0" Name="btnUpdateMeetingItemDueDate" VerticalAlignment="Top" Width="186" />
         <Button Height="54" HorizontalAlignment="Left" Margin="178,471,0,0" Name="btnUpdateMeetingItemStatus" VerticalAlignment="Top" Width="164"
-                Command="{Binding Path=EditItemStatus}">
+                Command="{Binding Path=EditItemStatusCommand}">
             <TextBlock TextAlignment="Center">Update Meeting Item<LineBreak />Status</TextBlock>
         </Button>
         <Label Background="#00000000"  FontSize="25" Height="48" Margin="218,53,51,457" Name="lblCurrentMeeting" Padding="5" 
                Content="{Binding Path=CurrentMeeting.MeetingCodeAndType}"
                />
-        <Button Content="Cancel" Height="23" HorizontalAlignment="Right" Margin="0,418,128,0" Name="button1" VerticalAlignment="Top" Width="110" />
-        <Button Content="Save" Height="23" HorizontalAlignment="Right" Margin="0,418,12,0" Name="button2" VerticalAlignment="Top" Width="110" />
+        <Button Content="Cancel" Height="23" HorizontalAlignment="Right" Margin="0,418,128,0" Name="btnCancel" VerticalAlignment="Top" Width="110" 
+                Command="{Binding Path=CancelItemCommand}"
+                />
+        <Button Content="Save" Height="23" HorizontalAlignment="Right" Margin="0,418,12,0" Name="btnSave" VerticalAlignment="Top" Width="110" 
+                Command="{Binding Path=SaveItemCommand}"
+                />
     </Grid>
 </UserControl>

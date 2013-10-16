@@ -17,7 +17,7 @@ using ResolutionActionSystemLogic.CustomClasses;
 namespace ResolutionActionSystem.EditMeetingPopups
 {
     /// <summary>
-    /// Interaction logic for EditItemStatus.xaml
+    /// Interaction logic for EditItemStatusCommand.xaml
     /// </summary>
     public partial class EditItemStatus : Window
     {

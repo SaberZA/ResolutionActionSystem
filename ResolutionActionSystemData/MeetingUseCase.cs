@@ -36,7 +36,7 @@ namespace ResolutionActionSystemContext
         
         public MeetingMinute CurrentMeetingItem { get; set; }
 
-        protected bool CurrentHasChanges { get; set; }
+        public bool CurrentHasChanges { get; set; }
 
         #region Business Methods
 
@@ -56,8 +56,15 @@ namespace ResolutionActionSystemContext
         public void Save()
         {
             Context.SaveChanges();
+            CurrentHasChanges = false;
         }
 
+        public void Cancel()
+        {
+            Current = Context.Meetings.FirstOrDefault(p => p.MeetingId == Current.MeetingId);
+            CurrentHasChanges = false;
+        }
+        
         public Meeting GetMeetingById(int meetingId)
         {
             return Context.Meetings.FirstOrDefault(p => p.MeetingId == meetingId);
@@ -107,11 +114,7 @@ namespace ResolutionActionSystemContext
             CurrentHasChanges = true;
         }
 
-        public void Cancel()
-        {
-            CurrentHasChanges = false;
-            Current = Context.Meetings.FirstOrDefault(p => p.MeetingId == Current.MeetingId);
-        }
+        
 
 
         public void UpdateCurrentMeeting_MeetingType(MeetingType meetingType)
@@ -121,6 +124,9 @@ namespace ResolutionActionSystemContext
 
             if (!previousMeetings.Any())
             {
+                Current.PreviousMeeting = null;
+                Current.MeetingNumber = 1;
+                Current.MeetingType = meetingType;
                 return;
             }
 

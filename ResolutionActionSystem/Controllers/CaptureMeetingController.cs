@@ -69,12 +69,13 @@ namespace ResolutionActionSystem
 
                 //Custom Updates
                 MeetingUseCase.UpdateCurrentMeeting_MeetingType(CurrentMeetingType);
-                if (CurrentMeeting.PreviousMeeting !=null)
-                {
+               // if (CurrentMeeting.PreviousMeeting !=null)
+                //{
                     AvailableMeetingMinutes = PreviousMeetingMinutes;
                     OnPropertyChanged("PreviousMeetingMinutes");
                     OnPropertyChanged("AvailableMeetingMinutes");
-                }
+                //}
+
                 //------------
             }
         }
@@ -146,6 +147,7 @@ namespace ResolutionActionSystem
         }
         #endregion
 
+        #region Events
         public event InformationEventHandler InformationEventRaised;
         public delegate void InformationEventHandler(object sender, string infoMessage);
 
@@ -163,6 +165,7 @@ namespace ResolutionActionSystem
             var handler = UIEventRaised;
             if (handler != null) handler(this, args);
         }
+        #endregion
 
         #region ICommands
         public ICommand ReturnAllItemsCommand { get; set; }
