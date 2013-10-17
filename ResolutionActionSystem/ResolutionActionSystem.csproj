@@ -104,6 +104,8 @@
       <DependentUpon>CaptureMeeting.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\CaptureMeetingViewModel.cs" />
+    <Compile Include="Common\ISetMeeting.cs" />
+    <Compile Include="Common\ISetStatus.cs" />
     <Compile Include="ViewModel\ViewModel.cs" />
     <Compile Include="Common\IControllable.cs" />
     <Compile Include="EditMeeting.xaml.cs">

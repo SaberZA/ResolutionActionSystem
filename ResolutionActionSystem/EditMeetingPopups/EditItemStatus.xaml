@@ -4,19 +4,18 @@
         Title="Update Item Status" Height="300" Width="300" WindowStartupLocation="CenterOwner"
         Left="0" Top="0">
     <Grid Background="LightGray">
-        <ComboBox Height="23" HorizontalAlignment="Left" Margin="88,97,0,0" Name="cboItemStatus" VerticalAlignment="Top" Width="178" 
+        <ComboBox Height="23" HorizontalAlignment="Left" Margin="88,130,0,0" Name="cboItemStatus" VerticalAlignment="Top" Width="178" 
                   ItemsSource="{Binding Path=MeetingItemStatusLus}"
                   SelectedItem="{Binding Path=SelectedMeetingItemStatusLu, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                   DisplayMemberPath="MeetingItemStatusDesc"
                   SelectedValuePath="MeetingItemStatusLuId"
                   
                   />
-        <Label Content="Selected Item: " Height="28" HorizontalAlignment="Left" Margin="12,12,0,0" Name="label1" VerticalAlignment="Top" Width="98" FontSize="14" />
-        <Label Content="Please select new status for selected item." Height="28" HorizontalAlignment="Left" Margin="21,46,0,0" Name="lblInstructions" VerticalAlignment="Top" FontStyle="Italic" />
-        <Label Content="Item Status:" Height="28" HorizontalAlignment="Left" Margin="12,92,0,0" Name="label3" VerticalAlignment="Top" />
-        <Label FontSize="14" Height="28" HorizontalAlignment="Left" Margin="116,12,0,0" Name="lblSelectedItem" VerticalAlignment="Top" Width="150" BorderThickness="1" BorderBrush="LightSteelBlue" 
-               Content="{Binding Path=CurrentMeetingItem.MeetingItemDescription, Mode=OneWay}"
-               />
+        <Label Content="Selected Item: " Height="28" HorizontalAlignment="Left" Margin="12,0,0,0" Name="label1" VerticalAlignment="Top" Width="98" FontSize="14" Visibility="Hidden" />
+        <Label Content="Please select new status for selected item." Height="28" HorizontalAlignment="Left" Margin="26,91,0,0" Name="lblInstructions" VerticalAlignment="Top" FontStyle="Italic" />
+        <Label Content="Item Status:" Height="28" HorizontalAlignment="Left" Margin="12,125,0,0" Name="label3" VerticalAlignment="Top" />
+        <TextBox FontSize="14" Height="28" HorizontalAlignment="Left" Margin="12,26,0,0" Name="lblSelectedItem" VerticalAlignment="Top" Width="254" BorderThickness="1" BorderBrush="LightSteelBlue" 
+               Text="{Binding Path=CurrentMeetingItem.MeetingItemDescription, Mode=OneWay}" IsReadOnly="True" />
         <Button Content="Submit" Height="63" HorizontalAlignment="Left" Margin="12,186,0,0" Name="button1" VerticalAlignment="Top" Width="254" 
                 Command="{Binding Path=SubmitItemStatus}"
                 />

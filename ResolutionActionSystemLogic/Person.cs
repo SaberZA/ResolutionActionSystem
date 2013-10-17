@@ -10,6 +10,8 @@ namespace ResolutionActionSystemLogic
     [Table("Person")]
     public class Person
     {
+        public Person(){}
+
         public Person(string firstName, string lastName)
         {
             FirstName = firstName;

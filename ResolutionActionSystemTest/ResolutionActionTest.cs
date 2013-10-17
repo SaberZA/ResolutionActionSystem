@@ -80,20 +80,7 @@ namespace ResolutionActionSystemTest
             Assert.IsTrue(hasMeetingItemStatusOfCreated);
         }
 
-        private static void CreateMeetingItemStatus(Meeting meeting, MeetingItem meetingItem, Context db,
-                                                    out MeetingItemStatus meetingItemStatus)
-        {
-            meetingItemStatus = new MeetingItemStatus();
-            var meetingItemStatusLu = CreateMeetingItemStatusLu();
-
-            meetingItemStatus.MeetingItemStatusLu = meetingItemStatusLu;
-            meetingItemStatus.MeetingItemStatusDate = DateTime.Now;
-            meetingItemStatus.Meeting = meeting;
-            meetingItemStatus.MeetingItem = meetingItem;
-
-            db.MeetingItemStatusLus.Add(meetingItemStatusLu);
-            db.MeetingItemStatuses.Add(meetingItemStatus);
-        }
+        
 
         [TestMethod]
         public void AddMeetingItem_GivenMeeting_ShouldReturnMeeting_MeetingStatuses_MeetingItems()
@@ -168,7 +155,6 @@ namespace ResolutionActionSystemTest
 
             // Run Test --------------------
             var personResponsible = new Person("Bob","Smith");
-            //uc.AddPerson(personResponsible);
             uc.UpdateCurrentMeetingItem_PersonResponsible(personResponsible);
 
             // Validate Test --------------------
@@ -199,10 +185,9 @@ namespace ResolutionActionSystemTest
 
             int meetingItemStatusId = meetingItemStatus.MeetingItemStatusId;
             uc.CurrentMeetingItem = new MeetingMinute(meetingItemStatus);
-            
 
-            // Run Test --------------------
-            uc.UpdateCurrentMeetingItem_Status(meetingItemStatusLu);
+            // Run Test --------------------;
+            uc.CurrentMeetingItem.UpdateMeetingItemStatus(meetingItemStatusLu);
 
             // Validate Test --------------------
             var updatedMeetingMinute = uc.GetMeetingMinute(meetingItemStatusId);
@@ -271,6 +256,7 @@ namespace ResolutionActionSystemTest
             // Validate Test --------------------
             var newCurrentMeeting = uc.Current != null;
 
+            // Assert --------------------
             Assert.IsTrue(newCurrentMeeting);
         }
 
@@ -365,6 +351,21 @@ namespace ResolutionActionSystemTest
             meetingItem.MeetingItemDueDate = DateTime.Now;
             meetingItem.PersonResponsible = new Person("Bob", "Smith");
             return meetingItem;
+        }
+
+        private static void CreateMeetingItemStatus(Meeting meeting, MeetingItem meetingItem, Context db,
+                                                    out MeetingItemStatus meetingItemStatus)
+        {
+            meetingItemStatus = new MeetingItemStatus();
+            var meetingItemStatusLu = CreateMeetingItemStatusLu();
+
+            meetingItemStatus.MeetingItemStatusLu = meetingItemStatusLu;
+            meetingItemStatus.MeetingItemStatusDate = DateTime.Now;
+            meetingItemStatus.Meeting = meeting;
+            meetingItemStatus.MeetingItem = meetingItem;
+
+            db.MeetingItemStatusLus.Add(meetingItemStatusLu);
+            db.MeetingItemStatuses.Add(meetingItemStatus);
         }
 
         #endregion

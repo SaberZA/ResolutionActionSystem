@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.Remoting.Contexts;
 using ResolutionActionSystemLogic;
 using ResolutionActionSystemLogic.CustomClasses;
@@ -61,8 +65,55 @@ namespace ResolutionActionSystemContext
 
         public void Cancel()
         {
-            Current = Context.Meetings.FirstOrDefault(p => p.MeetingId == Current.MeetingId);
+            // Change Tracker not tracking changes made to MeetingItemStatusLu association 
+            // Not ideal : Reloading Context
+            // RollBack();
+            int originalMeetingId = Current.MeetingId;
+            Context = new Context();
             CurrentHasChanges = false;
+            Current = Context.Meetings.FirstOrDefault(p => p.MeetingId == originalMeetingId);
+        }
+
+        public void RollBack()
+        {
+            var context = Context;
+            var changedEntries = context.ChangeTracker.Entries().Where(x => x.State != EntityState.Unchanged).ToList();
+
+            foreach (var entry in changedEntries.Where(x => x.State == EntityState.Modified))
+            {
+                entry.CurrentValues.SetValues(entry.OriginalValues);
+                entry.State = EntityState.Unchanged;
+            }
+
+            foreach (var entry in changedEntries.Where(x => x.State == EntityState.Added))
+            {
+                entry.State = EntityState.Detached;
+            }
+
+            foreach (var entry in changedEntries.Where(x => x.State == EntityState.Deleted))
+            {
+                entry.State = EntityState.Unchanged;
+            }
+
+        }
+
+        public void UndoUpdates(DbContext dbContext)
+        {
+            //Get list of entities that are marked as modified
+            List<DbEntityEntry> modifiedEntityList =
+                dbContext.ChangeTracker.Entries().Where(x => x.State == EntityState.Modified).ToList();
+
+            foreach (DbEntityEntry entity in modifiedEntityList)
+            {
+                DbPropertyValues propertyValues = entity.OriginalValues;
+                foreach (String propertyName in propertyValues.PropertyNames)
+                {
+                    //Replace current values with original values
+                    PropertyInfo property = entity.Entity.GetType().GetProperty(propertyName);
+                    property.SetValue(entity.Entity, propertyValues[propertyName],null);
+                    //property.SetValue(entity.Entity, propertyValues[propertyName]);
+                }
+            }
         }
         
         public Meeting GetMeetingById(int meetingId)

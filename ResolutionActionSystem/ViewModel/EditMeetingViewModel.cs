@@ -89,6 +89,7 @@ namespace ResolutionActionSystem
             {
                 if (Equals(value, _currentMeetingItem)) return;
                 _currentMeetingItem = value;
+                MeetingUseCase.CurrentMeetingItem = _currentMeetingItem;
                 OnPropertyChanged("CurrentMeetingItem");
                 OnPropertyChanged("MeetingActions");
             }
@@ -123,6 +124,7 @@ namespace ResolutionActionSystem
         {
             InitModel();
             CurrentMeeting = Meetings.FirstOrDefault(p => p.MeetingId == meeting.MeetingId);
+            SelectedMeeting = CurrentMeeting;
         }
 
         private void Save()
@@ -139,7 +141,10 @@ namespace ResolutionActionSystem
         private void Cancel()
         {
             MeetingUseCase.Cancel();
+            
             CurrentMeetingItemHasChanges = false;
+            CurrentMeetingItem = null;
+            ScheduledMeetingMinutes = null;
             MeetingIsNew = true;
             CurrentMeeting = MeetingUseCase.Current;
             OnPropertyChanged("");
@@ -237,15 +242,5 @@ namespace ResolutionActionSystem
             CurrentMeetingItem.UpdateMeetingItemStatus(meetingItemStatusLu);
             OnPropertyChanged("CurrentMeetingItem");
         }
-    }
-
-    public interface ISetStatus
-    {
-        void SetItemStatus(MeetingItemStatusLu meetingItemStatusLu);
-    }
-
-    public interface ISetMeeting
-    {
-        void SetMeeting(Meeting meeting);
     }
 }
