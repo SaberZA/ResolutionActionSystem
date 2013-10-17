@@ -18,18 +18,26 @@ namespace ResolutionActionSystem
     public class CaptureMeetingViewModel<T> :Controller, INotifyPropertyChanged, IGetMeeting, IDataErrorInfo where T: CaptureMeeting
     {
         protected MeetingUseCase MeetingUseCase { get; set; }
+        public MeetingMinute ScheduledMeetingItem { get; set; }
 
         public CaptureMeetingViewModel(T userControl) 
             : base(userControl)
         {
-            var meetingUseCase = new MeetingUseCase();
-            this.MeetingUseCase = meetingUseCase;
+            InitModel();
             MeetingUseCase.CreateNewMeeting();
             this.CurrentMeetingDate = DateTime.Today;
             
             SetupEventHandlers();
 
             ScheduledMeetingMinutes = new ObservableCollection<MeetingMinute>();
+        }
+
+        #region Methods
+
+        private void InitModel()
+        {
+            var meetingUseCase = new MeetingUseCase();
+            this.MeetingUseCase = meetingUseCase;
         }
 
         private void SetupEventHandlers()
@@ -42,76 +50,11 @@ namespace ResolutionActionSystem
             CreateMeetingCommand = new RelayCommand(CreateMeeting_Execute, CreateMeeting_CanExecute);
         }
 
-        void CaptureMeetingController_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            MeetingUseCase.PropertyChanged(e.PropertyName);
-        }
-        
-        private Meeting CurrentMeeting
-        {
-            get { return MeetingUseCase.Current; }
-        }
-
-        public MeetingMinute CurrentMeetingItem { get; set; }
-
-        public MeetingMinute ScheduledMeetingItem { get; set; }
-
-        public MeetingType CurrentMeetingType
-        {
-            get { return CurrentMeeting.MeetingType; }
-            set
-            {
-                if (CurrentMeeting.MeetingType == value) return;
-
-                CurrentMeeting.MeetingType = value;
-                OnPropertyChanged("MeetingType");
-
-                //Custom Updates
-                MeetingUseCase.UpdateCurrentMeeting_MeetingType(CurrentMeetingType);
-               
-                AvailableMeetingMinutes = PreviousMeetingMinutes;
-                OnPropertyChanged("PreviousMeetingMinutes");
-                OnPropertyChanged("AvailableMeetingMinutes");
-                
-            }
-        }
-
-        public ObservableCollection<MeetingMinute> AvailableMeetingMinutes{get; set;}
-
-        public ObservableCollection<MeetingMinute> ScheduledMeetingMinutes{get; set;}
-
-        public ObservableCollection<MeetingMinute> PreviousMeetingMinutes
-        {
-            get
-            {
-                var minutes = new ObservableCollection<MeetingMinute>();
-                foreach (MeetingMinute scheduledMeetingMinute in MeetingUseCase.GetPreviousMeetingMinutes())
-                {
-                    minutes.Add(scheduledMeetingMinute);
-                }
-                return minutes;
-            }
-        }
-
-        public DateTime CurrentMeetingDate
-        {
-            get { return CurrentMeeting.MeetingDate; }
-            set
-            {
-                if (CurrentMeeting.MeetingDate == value) return;
-                CurrentMeeting.MeetingDate = value;
-                OnPropertyChanged("MeetingDate");
-            }
-        }
-
-        public List<MeetingType> MeetingTypes { get { return MeetingUseCase.MeetingTypes; } }
-
         public Meeting GetMeeting()
         {
             return CurrentMeeting;
         }
 
-        #region Transfer Methods
         private void RemoveScheduledMeetingMinute(MeetingMinute scheduledMeetingItem)
         {
             ScheduledMeetingMinutes.Remove(scheduledMeetingItem);
@@ -135,8 +78,96 @@ namespace ResolutionActionSystem
             AvailableMeetingMinutes.Remove(currentMeetingItem);
             OnPropertyChanged("AvailableMeetingMinutes");
         }
+
+        private void CreateMeeting()
+        {
+            MeetingUseCase.LinkMeetingItems(ScheduledMeetingMinutes);
+            MeetingUseCase.Save();
+            InformationEventRaised(this, "Meeting Created.\r\nYou can now proceed to edit the Meeting further.");
+            UIEventRaised(this, UIEventHandlerArgs.MeetingCreated);
+            Clear();
+        }
+
+        private void Clear()
+        {
+            MeetingUseCase.CreateNewMeeting();
+            ScheduledMeetingMinutes = new ObservableCollection<MeetingMinute>();
+            AvailableMeetingMinutes = new ObservableCollection<MeetingMinute>();
+            CurrentMeetingDate = DateTime.Today;
+            OnPropertyChanged("");
+        }
         #endregion
 
+        #region Current Properties
+        private Meeting CurrentMeeting
+        {
+            get { return MeetingUseCase.Current; }
+        }
+
+        public MeetingMinute CurrentMeetingItem { get; set; }
+
+        public MeetingType CurrentMeetingType
+        {
+            get { return CurrentMeeting.MeetingType; }
+            set
+            {
+                if (CurrentMeeting.MeetingType == value) return;
+
+                CurrentMeeting.MeetingType = value;
+                OnPropertyChanged("MeetingType");
+
+                //Custom Updates
+                MeetingUseCase.UpdateCurrentMeeting_MeetingType(CurrentMeetingType);
+
+                AvailableMeetingMinutes = PreviousMeetingMinutes;
+                OnPropertyChanged("PreviousMeetingMinutes");
+                OnPropertyChanged("AvailableMeetingMinutes");
+
+            }
+        }
+
+        public DateTime CurrentMeetingDate
+        {
+            get { return CurrentMeeting.MeetingDate; }
+            set
+            {
+                if (CurrentMeeting.MeetingDate == value) return;
+                CurrentMeeting.MeetingDate = value;
+                OnPropertyChanged("MeetingDate");
+            }
+        }
+        #endregion
+        
+        #region Lists
+        public ObservableCollection<MeetingMinute> AvailableMeetingMinutes { get; set; }
+
+        public ObservableCollection<MeetingMinute> ScheduledMeetingMinutes { get; set; }
+
+        public ObservableCollection<MeetingMinute> PreviousMeetingMinutes
+        {
+            get
+            {
+                var minutes = new ObservableCollection<MeetingMinute>();
+                foreach (MeetingMinute scheduledMeetingMinute in MeetingUseCase.GetPreviousMeetingMinutes())
+                {
+                    minutes.Add(scheduledMeetingMinute);
+                }
+                return minutes;
+            }
+        }
+
+
+
+        public List<MeetingType> MeetingTypes
+        {
+            get
+            {
+                return MeetingUseCase.MeetingTypes
+                    .OrderBy(p => p.MeetingTypeName).ToList();
+            }
+        }
+        #endregion
+        
         #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -149,6 +180,11 @@ namespace ResolutionActionSystem
         #endregion
 
         #region Events
+        void CaptureMeetingController_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            MeetingUseCase.PropertyChanged(e.PropertyName);
+        }
+
         public event InformationEventHandler InformationEventRaised;
         public delegate void InformationEventHandler(object sender, string infoMessage);
 
@@ -246,23 +282,7 @@ namespace ResolutionActionSystem
             CreateMeeting();
         }
 
-        private void CreateMeeting()
-        {
-            MeetingUseCase.LinkMeetingItems(ScheduledMeetingMinutes);
-            MeetingUseCase.Save();
-            InformationEventRaised(this, "Meeting Created.\r\nYou can now proceed to edit the Meeting further.");
-            UIEventRaised(this, UIEventHandlerArgs.MeetingCreated);
-            Clear();
-        }
-
-        private void Clear()
-        {
-            MeetingUseCase.CreateNewMeeting();
-            ScheduledMeetingMinutes = new ObservableCollection<MeetingMinute>();
-            AvailableMeetingMinutes = new ObservableCollection<MeetingMinute>();
-            CurrentMeetingDate = DateTime.Today;
-            OnPropertyChanged("");
-        }
+        
 
         #endregion
 
@@ -302,10 +322,5 @@ namespace ResolutionActionSystem
 
         public string Error { get; private set; }
         #endregion
-    }
-
-    public interface IGetMeeting
-    {
-        Meeting GetMeeting();
     }
 }

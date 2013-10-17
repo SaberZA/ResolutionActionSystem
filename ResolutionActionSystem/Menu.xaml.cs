@@ -21,7 +21,7 @@ namespace ResolutionActionSystem
     /// </summary>
     public partial class Menu : UserControl, IControllable
     {
-        protected MenuViewModel<Menu> ViewModel { get; set; }
+        protected MenuController<Menu> ViewModel { get; set; }
         protected EditMeeting EditMeetingUserControl { get; set; }
         protected CaptureMeeting CaptureMeetingUserControl { get; set; }
 
@@ -59,7 +59,7 @@ namespace ResolutionActionSystem
 
         public void InitController()
         {
-            this.ViewModel = new MenuViewModel<Menu>(this);
+            this.ViewModel = new MenuController<Menu>(this);
         }
 
         public Controller GetController()

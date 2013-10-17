@@ -17,6 +17,7 @@ namespace ResolutionActionSystem
     public class EditMeetingViewModel<T> : Controller, INotifyPropertyChanged, ISetMeeting, ISetStatus where T: EditMeeting
     {
         public MeetingUseCase MeetingUseCase { get; set; }
+        private bool MeetingIsNew { get; set; }
         
         public EditMeetingViewModel(T userControl) 
             : base(userControl)
@@ -28,96 +29,12 @@ namespace ResolutionActionSystem
             CancelItemCommand = new RelayCommand(CancelItem_Execute, CancelItem_CanExecute);
             SelectMeetingCommand = new RelayCommand(SelectMeeting_Execute, SelectMeeting_CanExecute);
         }
-        
-        private bool CurrentMeetingItemHasChanges { get; set; }
 
+        #region Methods
         private void InitModel()
         {
             var meetingUseCase = new MeetingUseCase();
             this.MeetingUseCase = meetingUseCase;
-        }
-
-        public ObservableCollection<Meeting> Meetings
-        {
-            get
-            {
-                var meetings = new ObservableCollection<Meeting>();
-                foreach (Meeting meeting in MeetingUseCase.Meetings)
-                    meetings.Add(meeting);
-
-                return meetings;
-            }
-        }
-
-        public Meeting SelectedMeeting
-        {
-            get { return _selectedMeeting; }
-            set
-            {
-                if (Equals(value, _selectedMeeting)) return;
-                _selectedMeeting = value;
-                OnPropertyChanged("SelectedMeeting");
-            }
-        }
-
-        private Meeting _currentMeeting;
-        private MeetingMinute _currentMeetingItem;
-        private Meeting _selectedMeeting;
-
-        public Meeting CurrentMeeting
-        {
-            get { return _currentMeeting; }
-            set
-            {
-                if (_currentMeeting == value && !MeetingIsNew) return;
-                MeetingIsNew = false;
-                _currentMeeting = value;
-                this.MeetingUseCase.Current = value;
-                ScheduledMeetingMinutes = OriginalMeetingMinutes;
-                
-                OnPropertyChanged("CurrentMeeting");
-                OnPropertyChanged("");
-            }
-        }
-
-        private bool MeetingIsNew { get; set; }
-
-        public MeetingMinute CurrentMeetingItem
-        {
-            get { return _currentMeetingItem; }
-            set
-            {
-                if (Equals(value, _currentMeetingItem)) return;
-                _currentMeetingItem = value;
-                MeetingUseCase.CurrentMeetingItem = _currentMeetingItem;
-                OnPropertyChanged("CurrentMeetingItem");
-                OnPropertyChanged("MeetingActions");
-            }
-        }
-
-        public ObservableCollection<MeetingAction> MeetingActions
-        {
-            get
-            {
-                return CurrentMeetingItem == null 
-                    ? new ObservableCollection<MeetingAction>() 
-                    : Common.ToObservableCollection(CurrentMeetingItem.MeetingItemStatus.MeetingActions);
-            }
-        }
-
-        public ObservableCollection<MeetingMinute> ScheduledMeetingMinutes { get; set; }
-
-        public ObservableCollection<MeetingMinute> OriginalMeetingMinutes
-        {
-            get
-            {
-                var minutes = new ObservableCollection<MeetingMinute>();
-                foreach (MeetingMinute scheduledMeetingMinute in MeetingUseCase.GetCurrentMeetingMinutes())
-                {
-                    minutes.Add(scheduledMeetingMinute);
-                }
-                return minutes;
-            }
         }
 
         public void SetMeeting(Meeting meeting)
@@ -141,7 +58,7 @@ namespace ResolutionActionSystem
         private void Cancel()
         {
             MeetingUseCase.Cancel();
-            
+
             CurrentMeetingItemHasChanges = false;
             CurrentMeetingItem = null;
             ScheduledMeetingMinutes = null;
@@ -149,6 +66,103 @@ namespace ResolutionActionSystem
             CurrentMeeting = MeetingUseCase.Current;
             OnPropertyChanged("");
         }
+
+        public void SetItemStatus(MeetingItemStatusLu meetingItemStatusLu)
+        {
+            if (CurrentMeetingItem == null) return;
+
+            CurrentMeetingItemHasChanges = true;
+
+            CurrentMeetingItem.UpdateMeetingItemStatus(meetingItemStatusLu);
+            OnPropertyChanged("CurrentMeetingItem");
+        }
+        #endregion
+
+        #region Current Properties
+        private bool CurrentMeetingItemHasChanges { get; set; }
+        private Meeting _currentMeeting;
+        private MeetingMinute _currentMeetingItem;
+        private Meeting _selectedMeeting;
+
+        public Meeting SelectedMeeting
+        {
+            get { return _selectedMeeting; }
+            set
+            {
+                if (Equals(value, _selectedMeeting)) return;
+                _selectedMeeting = value;
+                OnPropertyChanged("SelectedMeeting");
+            }
+        }
+
+        public Meeting CurrentMeeting
+        {
+            get { return _currentMeeting; }
+            set
+            {
+                if (_currentMeeting == value && !MeetingIsNew) return;
+                MeetingIsNew = false;
+                _currentMeeting = value;
+                this.MeetingUseCase.Current = value;
+                ScheduledMeetingMinutes = OriginalMeetingMinutes;
+
+                OnPropertyChanged("CurrentMeeting");
+                OnPropertyChanged("");
+            }
+        }
+
+        public MeetingMinute CurrentMeetingItem
+        {
+            get { return _currentMeetingItem; }
+            set
+            {
+                if (Equals(value, _currentMeetingItem)) return;
+                _currentMeetingItem = value;
+                MeetingUseCase.CurrentMeetingItem = _currentMeetingItem;
+                OnPropertyChanged("CurrentMeetingItem");
+                OnPropertyChanged("MeetingActions");
+            }
+        }
+        #endregion
+
+        #region Lists
+        public ObservableCollection<Meeting> Meetings
+        {
+            get
+            {
+                var meetings = new ObservableCollection<Meeting>();
+                foreach (Meeting meeting in MeetingUseCase.Meetings.OrderByDescending(p => p.MeetingNumber))
+                    meetings.Add(meeting);
+
+                return meetings;
+            }
+        }
+
+        public ObservableCollection<MeetingAction> MeetingActions
+        {
+            get
+            {
+                return CurrentMeetingItem == null
+                    ? new ObservableCollection<MeetingAction>()
+                    : Common.ToObservableCollection(CurrentMeetingItem.MeetingItemStatus.MeetingActions);
+            }
+        }
+
+        public ObservableCollection<MeetingMinute> ScheduledMeetingMinutes { get; set; }
+
+        public ObservableCollection<MeetingMinute> OriginalMeetingMinutes
+        {
+            get
+            {
+                var minutes = new ObservableCollection<MeetingMinute>();
+                foreach (MeetingMinute scheduledMeetingMinute in MeetingUseCase.GetCurrentMeetingMinutes())
+                {
+                    minutes.Add(scheduledMeetingMinute);
+                }
+                return minutes;
+            }
+        }
+        #endregion
 
         #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
@@ -233,14 +247,6 @@ namespace ResolutionActionSystem
         }
         #endregion
 
-        public void SetItemStatus(MeetingItemStatusLu meetingItemStatusLu)
-        {
-            if (CurrentMeetingItem == null) return;
-            
-            CurrentMeetingItemHasChanges = true;
-            
-            CurrentMeetingItem.UpdateMeetingItemStatus(meetingItemStatusLu);
-            OnPropertyChanged("CurrentMeetingItem");
-        }
+        
     }
 }
