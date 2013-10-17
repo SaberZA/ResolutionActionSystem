@@ -241,7 +241,7 @@ namespace ResolutionActionSystemContext
                 MeetingItemDueDate = meetingItemDueDate,
                 PersonResponsible = personResponsible
             };
-            Context.MeetingItems.Add(meetingItem);
+            //Context.MeetingItems.Add(meetingItem);
 
             var meetingItemStatus = new MeetingItemStatus();
             meetingItemStatus.Meeting = Current;
@@ -249,6 +249,13 @@ namespace ResolutionActionSystemContext
             meetingItemStatus.MeetingItemStatusDate = DateTime.Now;
             meetingItemStatus.MeetingItemStatusLu =
                 Context.MeetingItemStatusLus.FirstOrDefault(p => p.MeetingItemStatusDesc.ToUpper() == "Created".ToUpper());
+            if (meetingItemStatus.MeetingItemStatusLu == null)
+            {
+                var meetingItemStatusLu = new MeetingItemStatusLu();
+                meetingItemStatusLu.MeetingItemStatusDesc = "Created";
+                meetingItemStatus.MeetingItemStatusLu = meetingItemStatusLu;
+                Context.MeetingItemStatusLus.Add(meetingItemStatusLu);
+            }
             Context.MeetingItemStatuses.Add(meetingItemStatus);
 
             meetingItem.MeetingItemStatuses.Add(meetingItemStatus);

@@ -274,7 +274,7 @@ namespace ResolutionActionSystem
         public ICommand CreateMeetingCommand { get; set; }
         private bool CreateMeeting_CanExecute()
         {
-            return string.IsNullOrEmpty(Error);
+            return string.IsNullOrEmpty(CurrentMeetingTypeError) && string.IsNullOrEmpty(CurrentMeetingDateError);
         }
 
         private void CreateMeeting_Execute()
@@ -297,11 +297,11 @@ namespace ResolutionActionSystem
                     if (CurrentMeetingType == null)
                     {
                         result = "Meeting Type must not be empty.";
-                        Error = result;
+                        CurrentMeetingTypeError = result;
                     }
                     else
                     {
-                        Error = null;
+                        CurrentMeetingTypeError = null;
                     }
                 }
                 if (name == "CurrentMeetingDate")
@@ -309,16 +309,20 @@ namespace ResolutionActionSystem
                     if (CurrentMeetingDate.CompareTo(DateTime.Today) < 0)
                     {
                         result = "Scheduled Date cannot be before today.";
-                        Error = result;
+                        CurrentMeetingDateError = result;
                     }
                     else
                     {
-                        Error = null;
+                        CurrentMeetingDateError = null;
                     }
                 }
                 return result;
             }
         }
+
+        protected string CurrentMeetingDateError { get; set; }
+
+        protected string CurrentMeetingTypeError { get; set; }
 
         public string Error { get; private set; }
         #endregion

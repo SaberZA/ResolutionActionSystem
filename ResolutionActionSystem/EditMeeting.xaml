@@ -38,8 +38,7 @@
                  IsReadOnly="True"
                  />
         <DatePicker Height="25" HorizontalAlignment="Left" Margin="452,244,0,0" Name="dpMeetingItemDueDate" VerticalAlignment="Top" Width="235" 
-                    SelectedDate="{Binding Path=CurrentMeetingItem.MeetingItemDueDate, Mode=OneWay}"
-                    />
+                    SelectedDate="{Binding Path=CurrentMeetingItem.MeetingItemDueDate, Mode=OneWay}" IsEnabled="False" Focusable="True" IsHitTestVisible="True" />
         <ListBox Height="110" HorizontalAlignment="Left" Margin="372,277,0,0" Name="lstMeetingActions" VerticalAlignment="Top" Width="315" 
                  ItemsSource="{Binding Path=MeetingActions}"
                  DisplayMemberPath="{Binding Path=ActionDescription}"
